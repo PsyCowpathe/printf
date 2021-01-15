@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:32:45 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/14 17:26:20 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/15 19:36:52 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,30 @@ void	ft_putstr(char *str)
 	i = 0;
 	while (str[i])
 		ft_putchar(str[i++]);
+}
+
+void	ft_putnbr(int nb)
+{
+	if (nb == -2147483648)
+	{
+		ft_putchar('-');
+		ft_putnbr(214748364);
+		ft_putchar(8 + 48);
+	}
+	else if (nb < 0)
+	{
+		ft_putchar('-');
+		ft_putnbr(nb * -1);
+	}
+	else if (nb < 10)
+	{
+		ft_putchar(nb + 48);
+	}
+	else
+	{
+		ft_putnbr(nb / 10);
+		ft_putchar(nb % 10 + 48);
+	}
 }
 
 int		is_prim(char c, char *primary)
@@ -60,42 +84,6 @@ int		is_sec(char c, char *secondary)
 	return (0);
 }
 
-
-int		check_flag(const char *str, int *i, char *primary, char *secondary)
-{
-	int		c;
-
-	c = 0;
-	*i += 1;
-	while (str[*i] && is_prim(str[*i], primary) == 0)
-	{
-		if (is_sec(str[*i], secondary) == 0)
-			return (0);
-		*i += 1;
-	}
-	if (str[*i] == '\0')
-		return (0);
-	return (1);
-}
-
-int		parsing(const char *str, char *primary, char *secondary)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '%')
-		{
-			if (check_flag(str, &i, primary, secondary) == 0)
-				return (0);
-		}
-		else
-			i++;
-	}
-	return (1);
-}
-
 int		init_flag(char **primary, char *fprim, char **secondary, char *fsec)
 {
 	int		i;
@@ -118,6 +106,110 @@ int		init_flag(char **primary, char *fprim, char **secondary, char *fsec)
 	return (1);
 }
 
+int		check_flag(const char *str, int *i, char *primary, char *secondary)
+{
+	int		c;
+
+	c = 0;
+	*i += 1;
+	while (str[*i] && is_prim(str[*i], primary) == 0)
+	{
+		if (is_sec(str[*i], secondary) == 0)
+			return (0);
+		*i += 1;
+	}
+	if (str[*i] == '\0')
+		return (0);
+	return (1);
+}
+
+void	print_flag(char *flag, va_list param)
+{
+	char	*str;
+	int		nb;
+
+	if (flag[0] == 's')
+	{
+		str = va_arg(param, char*);
+		ft_putstr(str);
+	}
+	else if (flag[0] == 'd')
+	{
+		nb = va_arg(param, int);
+		ft_putnbr(nb);
+	}
+	else
+		va_arg(param, void*);
+	ft_putchar('\n');
+
+}
+
+void	get_flag(char *str, va_list param)
+{
+	int		i;
+	int		d;
+	int		len;
+	char	*flag;
+	int		c;
+
+	i = 0;
+	d = 0;
+	c = 0;
+	len = 0;
+	while (str[i])
+	{
+		if (str[i] == '%')
+		{
+			d = i + 1;
+			while (str[d] && str[d] != '%')
+			{
+				len++;
+				d++;
+			}
+			flag = malloc(sizeof(char) * len + 1);
+			d = i + 1;
+			while (str[d] && str[d] != '%')
+				flag[c++] = str[d++];
+			flag[len] = '\0';
+			print_flag(flag, param);
+			free(flag);
+			return ;
+		}
+		i++;
+	}
+}
+
+int		parsing(const char *str, char *primary, char *secondary, va_list param)
+{
+	int		i;
+	int		save;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '%')
+		{
+			if (str[i + 1] == '%')
+				ft_putchar('%');
+			save = i;
+			if (check_flag(str, &i, primary, secondary) == 0)
+			{
+				while (str[save] && str[++save] != '%')
+					ft_putchar(str[save]);
+			}
+			else
+			{
+				//ft_putstr((char *)str + save);
+				get_flag((char *)str + save, param);
+			}
+		}
+		else
+			i++;
+	}
+	return (1);
+}
+
+
 int		ft_printf(const char *str, ...)
 {
 	va_list		param;
@@ -127,23 +219,16 @@ int		ft_printf(const char *str, ...)
 	if (init_flag(&primary, "cspdiuxX%", &secondary, "-0.*") == 0)
 		return (0);
 	va_start(param, str);
-	if (parsing(str, primary, secondary) == 0)
-	{
-		ft_putstr("bad flag");
-		return (0);
-	}
-	else
-	{
-		ft_putstr("good flag");
-	}
+	parsing(str, primary, secondary, param);
 	return (1);
 }
 
-int		main()
+int		main(int argc, char **argv)
 {
-	printf("%40d", 123);
+	(void)argc;
+	ft_printf(argv[1], "salut", "coucou", 123);
 	ft_putchar('\n');
-	ft_printf("%c.", 123, "coucou");
+	printf(argv[1], "salut", "coucou", 123);
 	return (0);
 }
 
