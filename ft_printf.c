@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/18 17:45:38 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 16:49:52 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,39 +58,12 @@ int		verif_flags(t_flags data, char *cut)
 	while (cut[i])
 	{
 		if (is_vip(data.primlist, cut[i]) == 1)
-			return (1);
+			return (i);
 		if (is_vip(data.seclist, cut[i]) == 0 && !(cut[i] >= '0' && cut[i] <= '9'))
-			return (0);
+			return (-1);
 		i++;
 	}
-	return (0);
-}
-
-int		get_nb(char *cut, int *i)
-{
-	int		c;
-	char	*tmp;
-
-	c = *i + 1;
-	while (cut[c] && (cut[c] >= '0' && cut[c] <= '9'))
-		c++;
-	if ((tmp = malloc(sizeof(char) * c)) == NULL)
-	{			
-		free(cut);
-		return (-1);
-	}
-	c = 0;
-	*i += 1;
-	while (cut[*i] && (cut[*i] >= '0' && cut[*i] <= '9'))
-	{
-		tmp[c] = cut[*i];
-		*i += 1;
-		c++;
-	}
-	tmp[c] = '\0';
-	c = ft_atoi(tmp);
-	free(tmp);
-	return (c);
+	return (-1);
 }
 
 void	print_struct(t_flags data)
@@ -119,6 +92,35 @@ void	print_struct(t_flags data)
 	ft_putchar('\n');
 }
 
+
+int		get_nb(char *cut, int *i)
+{
+	int		c;
+	char	*tmp;
+
+	c = *i + 1;
+	while (cut[c] && (cut[c] >= '0' && cut[c] <= '9'))
+		c++;
+	if ((tmp = malloc(sizeof(char) * c)) == NULL)
+	{			
+		free(cut);
+		return (-1);
+	}
+	c = 0;
+	*i += 1;
+	while (cut[*i] && (cut[*i] >= '0' && cut[*i] <= '9'))
+	{
+		tmp[c] = cut[*i];
+		*i += 1;
+		c++;
+	}
+	*i -= 1;
+	tmp[c] = '\0';
+	c = ft_atoi(tmp);
+	free(tmp);
+	return (c);
+}
+
 int		set_struct(t_flags data, va_list arg, char *cut)
 {
 	(void)arg;
@@ -132,10 +134,15 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 	data.fillen = 0;
 	data.preclen = 0;
 	data.width = 0;
+	ft_putchar('\n');
+	ft_putstr(cut);
+	ft_putchar(' ');
 	while (cut[i])
 	{
 		if (cut[i] == '-')
+		{
 			data.align = 1;
+		}
 		else if (cut[i] == '0')
 		{
 			data.fill = 1;
@@ -157,7 +164,7 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 		i++;
 	}
 	data.primary = cut[i - 1];
-	print_struct(data);
+	//print_struct(data); //delete la fonction aussi
 	return (1);
 }
 
@@ -165,7 +172,10 @@ int		cut_flags(t_flags data, va_list arg)
 {
 	int		i;
 	int		len;
+	int		ret;
 	char	*cut;
+	char	*save;
+
 
 	i = 0;
 	while (data.form[i])
@@ -190,10 +200,24 @@ int		cut_flags(t_flags data, va_list arg)
 				i++;
 			}
 			cut[len] = '\0';
-			if (verif_flags(data, cut) == 1)
+			if ((ret = verif_flags(data, cut)) >= 0)
 			{
+				save = NULL;
+				if (ret != ft_strlen(cut))
+				{
+					save = ft_strdup(cut + ret + 1);
+					cut[ret + 1] = '\0';
+				}
 				if (set_struct(data, arg, cut) == 0)
+				{
+					if (save != NULL)
+						free(save);
+					free(cut);
 					return (0);
+				}
+				ft_putstr(save);
+				if (save != NULL)
+					free(save);
 			}
 			else
 				ft_putstr(cut);
@@ -221,7 +245,8 @@ void	ft_printf(const char *str, ...)
 int		main(int argc, char **argv)
 {
 	(void)argc;
-	ft_printf(argv[1], 58.123, "coucou", 456);
+	ft_printf(argv[1], 58, 456, 20, "salut");
 	ft_putchar('\n');
-	printf(argv[1], 58.123, "coucou", 456);
+	printf(argv[1], 58, 456, 20, "salut");
+	printf("END");
 }

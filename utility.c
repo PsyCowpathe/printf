@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:53:32 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/17 16:53:43 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 14:45:58 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,16 @@ void	ft_putnbr(int nb)
 	}
 }
 
+int		ft_strlen(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str && str[i])
+		i++;
+	return (i);
+}
+
 int		ft_atoi(char *str)
 {
 	int		i;
@@ -78,3 +88,45 @@ int		ft_atoi(char *str)
 	}
 	return (res * neg);
 }
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t i;
+
+	i = 0;
+	while (i != n)
+	{
+		((unsigned char *)s)[i] = '\0';
+		i++;
+	}
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*data;
+
+	if (!(data = (malloc(count * size))))
+		return (NULL);
+	ft_bzero(data, count * size);
+	return (data);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	str = NULL;
+	if ((str = ft_calloc(ft_strlen((char *)s1) + 1, 1)) == NULL)
+		return (NULL);
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+
