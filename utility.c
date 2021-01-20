@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:53:32 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/19 14:45:58 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 15:03:27 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,4 +129,29 @@ char	*ft_strdup(const char *s1)
 	return (str);
 }
 
+char	*ft_itoa(int n)
+{
+	int		len;
+	int		neg;
+	long	nbr;
+	char	*res;
 
+	len = 1;
+	nbr = n;
+	while (nbr /= 10)
+		len++;
+	neg = (n < 0) ? 1 : 0;
+	nbr = n;
+	nbr = (nbr < 0) ? nbr * -1 : nbr;
+	if ((res = malloc(sizeof(char) * len + neg + 1)) == NULL)
+		return (NULL);
+	res[0] = (neg == 1) ? '-' : '0';
+	res[len + neg--] = '\0';
+	while (len != 0)
+	{
+		res[len + neg] = nbr % 10 + '0';
+		nbr /= 10;
+		len--;
+	}
+	return (res);
+}

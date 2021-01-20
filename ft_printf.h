@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/19 13:59:23 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 13:59:56 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ void	ft_putnbr(int nb);
 int		ft_strlen(char *str);
 int		ft_atoi(char *str);
 char	*ft_strdup(const char *s1);
+char	*ft_itoa(int n);
 
 #endif

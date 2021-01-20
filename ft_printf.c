@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/19 16:49:52 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 17:41:58 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,75 @@ int		get_nb(char *cut, int *i)
 	return (c);
 }
 
+void	int_conv(t_flags data, va_list arg)
+{
+	int		nb;
+	char	*tmp;
+	char	*res;
+	int		i;
+
+	i = 0;
+	tmp = NULL;
+	nb = (data.fillen > data.preclen) ? data.fillen : data.preclen;
+	res = malloc(sizeof(char) * nb + 1);
+	tmp = ft_itoa((int)va_arg(arg, int));
+	//ft_putstr("nb = ");
+	//ft_putnbr(nb);
+	//ft_putchar(' ');
+	if (data.precision == 1)
+	{
+		while (i < nb - ft_strlen(tmp))
+		{
+			res[i] = ' ';
+			i++;
+		}
+	}
+	i = nb - data.preclen;
+	if (data.fill == 1)
+	{
+		while (i < nb - ft_strlen(tmp))
+		{
+			res[i] = '0';
+			i++;
+		}
+	}
+	ft_putstr(res);
+	ft_putnbr(ft_atoi(tmp));
+
+}
+
+void	start_conv(t_flags data, va_list arg)
+{
+	char	*str;
+	int		nb;
+
+	if (data.primary == 's')
+	{
+		str = va_arg(arg, char *);
+		ft_putstr(str);
+	}
+	else if (data.primary == 'd')
+	{
+		nb = va_arg(arg, int);
+		ft_putnbr(nb);
+	}
+	else if (data.primary == 'i')
+	{
+		int_conv(data, arg);
+	}
+	else if (data.primary == 'c')
+	{
+		nb = (int)va_arg(arg, int);
+		ft_putchar(nb);
+	}
+	else
+	{
+		ft_putstr("pas encore fais");
+		va_arg(arg, void*);
+	}
+	//	ft_putchar('\n');
+}
+
 int		set_struct(t_flags data, va_list arg, char *cut)
 {
 	(void)arg;
@@ -134,9 +203,6 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 	data.fillen = 0;
 	data.preclen = 0;
 	data.width = 0;
-	ft_putchar('\n');
-	ft_putstr(cut);
-	ft_putchar(' ');
 	while (cut[i])
 	{
 		if (cut[i] == '-')
@@ -164,6 +230,7 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 		i++;
 	}
 	data.primary = cut[i - 1];
+	start_conv(data, arg);
 	//print_struct(data); //delete la fonction aussi
 	return (1);
 }
@@ -245,8 +312,14 @@ void	ft_printf(const char *str, ...)
 int		main(int argc, char **argv)
 {
 	(void)argc;
-	ft_printf(argv[1], 58, 456, 20, "salut");
+	ft_putstr("**************Moi**************");
 	ft_putchar('\n');
-	printf(argv[1], 58, 456, 20, "salut");
-	printf("END");
+	ft_printf(argv[1], 456, 20, "salut");
+	ft_putchar('\n');
+	ft_putchar('\n');
+	ft_putchar('\n');
+	ft_putstr("*************Printf************");
+	ft_putchar('\n');
+	printf(argv[1], 456, 20, "salut");
+	ft_putchar('\n');
 }
