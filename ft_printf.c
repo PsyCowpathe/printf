@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/20 17:41:58 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/21 15:39:46 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,26 @@ int		get_nb(char *cut, int *i)
 	return (c);
 }
 
-void	int_conv(t_flags data, va_list arg)
+void	int_advanced_conv(t_flags data, char *tmp)
+{
+	int		i;
+
+	i = 0;
+	while (i < data.preclen - ft_strlen(tmp))
+	{
+		ft_putchar('0');
+		i++;
+	}
+	ft_putnbr(ft_atoi(tmp));
+	i = (data.precision == 1) ? data.preclen : ft_strlen(tmp);
+	while (i < data.fillen)
+	{
+		ft_putchar(' ');
+		i++;
+	}
+}
+
+int		int_conv(t_flags data, va_list arg)
 {
 	int		nb;
 	char	*tmp;
@@ -129,44 +148,69 @@ void	int_conv(t_flags data, va_list arg)
 	int		i;
 
 	i = 0;
-	tmp = NULL;
 	nb = (data.fillen > data.preclen) ? data.fillen : data.preclen;
-	res = malloc(sizeof(char) * nb + 1);
+	if ((res = malloc(sizeof(char) * nb + 1)) == NULL)
+		return (0);
 	tmp = ft_itoa((int)va_arg(arg, int));
-	//ft_putstr("nb = ");
-	//ft_putnbr(nb);
-	//ft_putchar(' ');
-	if (data.precision == 1)
+	if (data.align == 1)
+		return (int_advanced_conv(data, tmp));
+	if (data.fill == 1 && data.precision == 0)
 	{
-		while (i < nb - ft_strlen(tmp))
-		{
-			res[i] = ' ';
-			i++;
-		}
+		while (i < data.fillen - ft_strlen(tmp))
+			res[i++] = '0';
 	}
-	i = nb - data.preclen;
-	if (data.fill == 1)
+	else
 	{
-		while (i < nb - ft_strlen(tmp))
+		if (data.precision == 1)
 		{
-			res[i] = '0';
-			i++;
+			while (i < nb - ft_strlen(tmp))
+				res[i++] = (data.fill == 1) ? ' ' : '0';
+			res[i] = '\0';
 		}
+		i = nb - data.preclen;
+		if (data.fill == 1)
+			while (i < nb - ft_strlen(tmp))
+				res[i++] = '0';
 	}
+	res[i] = '\0';
 	ft_putstr(res);
 	ft_putnbr(ft_atoi(tmp));
-
+	free(res);
+	return (1);
 }
 
-void	start_conv(t_flags data, va_list arg)
+void	string_conv(t_flags data, va_list arg)
 {
-	char	*str;
+	char	*res;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = va_arg(arg, char *);
+	res = malloc(sizeof(char) * data.fillen + 1);
+	while (i < data.fillen - ft_strlen(tmp))
+		res[i++] = (data.align == 1) ? ' ' : '0';
+	res[i] = '\0';
+	if (data.align == 1)
+	{
+		ft_putstr(tmp);
+		ft_putstr(res);
+	}
+	else
+	{
+		ft_putstr(res);
+		ft_putstr(tmp);
+	}
+	free(res);
+}
+
+int		start_conv(t_flags data, va_list arg)
+{
 	int		nb;
 
 	if (data.primary == 's')
 	{
-		str = va_arg(arg, char *);
-		ft_putstr(str);
+		string_conv(data, arg);
 	}
 	else if (data.primary == 'd')
 	{
@@ -175,7 +219,8 @@ void	start_conv(t_flags data, va_list arg)
 	}
 	else if (data.primary == 'i')
 	{
-		int_conv(data, arg);
+		if (int_conv(data, arg) == 0)
+			return (0);
 	}
 	else if (data.primary == 'c')
 	{
@@ -187,7 +232,7 @@ void	start_conv(t_flags data, va_list arg)
 		ft_putstr("pas encore fais");
 		va_arg(arg, void*);
 	}
-	//	ft_putchar('\n');
+	return (0);
 }
 
 int		set_struct(t_flags data, va_list arg, char *cut)
@@ -230,7 +275,8 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 		i++;
 	}
 	data.primary = cut[i - 1];
-	start_conv(data, arg);
+	if (start_conv(data, arg) == 0)
+		return (0);
 	//print_struct(data); //delete la fonction aussi
 	return (1);
 }
@@ -312,14 +358,7 @@ void	ft_printf(const char *str, ...)
 int		main(int argc, char **argv)
 {
 	(void)argc;
-	ft_putstr("**************Moi**************");
-	ft_putchar('\n');
-	ft_printf(argv[1], 456, 20, "salut");
-	ft_putchar('\n');
-	ft_putchar('\n');
-	ft_putchar('\n');
-	ft_putstr("*************Printf************");
-	ft_putchar('\n');
-	printf(argv[1], 456, 20, "salut");
+	ft_printf(argv[1], "salut");
+	printf(argv[1], "salut");
 	ft_putchar('\n');
 }
