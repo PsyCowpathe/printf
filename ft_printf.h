@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/21 15:39:53 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/22 13:43:34 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,7 @@ int		ft_strlen(char *str);
 int		ft_atoi(char *str);
 char	*ft_strdup(const char *s1);
 char	*ft_itoa(int n);
+int		ft_abs(int nb);
+int		ft_nblen(int nb);
 
 #endif

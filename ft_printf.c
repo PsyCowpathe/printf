@@ -6,13 +6,14 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/21 15:39:46 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/22 17:44:22 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 #include <stdio.h>
+#include <limits.h>
 
 int		flags_init(char **primary, char *plist, char **secondary, char *slist)
 {
@@ -92,7 +93,6 @@ void	print_struct(t_flags data)
 	ft_putchar('\n');
 }
 
-
 int		get_nb(char *cut, int *i)
 {
 	int		c;
@@ -121,61 +121,60 @@ int		get_nb(char *cut, int *i)
 	return (c);
 }
 
-void	int_advanced_conv(t_flags data, char *tmp)
+int		advanced_int_conv(t_flags data, int size, int nb)
 {
 	int		i;
+	int		c;
+	char	*res;
+	char	*tmp;
 
 	i = 0;
-	while (i < data.preclen - ft_strlen(tmp))
-	{
-		ft_putchar('0');
-		i++;
-	}
-	ft_putnbr(ft_atoi(tmp));
-	i = (data.precision == 1) ? data.preclen : ft_strlen(tmp);
+	c = 0;
+	if (nb < 0)
+		i = 1;
+	if ((res = malloc(sizeof(char) * size + i + 1)) == NULL)
+		return (0);
+	while (i < data.preclen - ft_nblen(nb))
+		res[i++] = '0';
+	tmp = ft_itoa(nb);
+	while (tmp[c])
+		res[i++] = tmp[c++];
 	while (i < data.fillen)
-	{
-		ft_putchar(' ');
-		i++;
-	}
+		res[i++] = ' ';
+	res[i] = '\0';
+	ft_putstr(res);
+	return (1);
 }
 
 int		int_conv(t_flags data, va_list arg)
 {
-	int		nb;
-	char	*tmp;
 	char	*res;
+	int		size;
+	int		nb;
 	int		i;
+	int		c;
 
+	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
+	nb = (int)va_arg(arg, int);
 	i = 0;
-	nb = (data.fillen > data.preclen) ? data.fillen : data.preclen;
-	if ((res = malloc(sizeof(char) * nb + 1)) == NULL)
-		return (0);
-	tmp = ft_itoa((int)va_arg(arg, int));
 	if (data.align == 1)
-		return (int_advanced_conv(data, tmp));
-	if (data.fill == 1 && data.precision == 0)
-	{
-		while (i < data.fillen - ft_strlen(tmp))
-			res[i++] = '0';
-	}
-	else
-	{
-		if (data.precision == 1)
-		{
-			while (i < nb - ft_strlen(tmp))
-				res[i++] = (data.fill == 1) ? ' ' : '0';
-			res[i] = '\0';
-		}
-		i = nb - data.preclen;
-		if (data.fill == 1)
-			while (i < nb - ft_strlen(tmp))
-				res[i++] = '0';
-	}
+		return (advanced_int_conv(data, size, nb));
+	if (nb < 0)
+		i = 1;
+	if ((res = malloc(sizeof(char) * size + i + 1)) == NULL)
+		return (0);
+	if (nb < 0)
+		res[i] = '-';
+	c = (data.fill = 1 && data.precision == 0) ? ft_nblen(nb) - 1 : -1;
+	if (nb < 0 && data.fillen > data.preclen)
+		c++;
+	while (++c < data.fillen - data.preclen)
+		res[i++] = (data.fill == 1 && data.precision == 0) ? '0' : ' ';
+	while (c++ < size - ft_nblen(nb))
+		res[i++] = '0';
 	res[i] = '\0';
 	ft_putstr(res);
-	ft_putnbr(ft_atoi(tmp));
-	free(res);
+	ft_putnbr(ft_abs(nb));
 	return (1);
 }
 
@@ -337,6 +336,7 @@ int		cut_flags(t_flags data, va_list arg)
 			free(cut);
 		}
 		else
+	//	ft_putchar('\n');
 			i++;
 	}
 	return (1);
@@ -358,7 +358,7 @@ void	ft_printf(const char *str, ...)
 int		main(int argc, char **argv)
 {
 	(void)argc;
-	ft_printf(argv[1], "salut");
-	printf(argv[1], "salut");
+	ft_printf(argv[1], 456);
+	printf(argv[1], 456);
 	ft_putchar('\n');
 }

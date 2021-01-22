@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:53:32 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/21 15:39:51 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/22 13:43:34 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,3 +155,28 @@ char	*ft_itoa(int n)
 	}
 	return (res);
 }
+
+int		ft_abs(int nb)
+{
+	if (nb < 0)
+		return (nb * -1);
+	else
+		return (nb); 
+}
+
+int		ft_nblen(int nb)
+{
+	int		len;
+
+	len = 0;
+	nb = ft_abs(nb);
+	if (nb == 0)
+		return (1);
+	while (nb > 0)
+	{
+		nb = nb / 10;
+		len++;
+	}
+	return (len);
+}
+
