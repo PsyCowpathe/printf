@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/22 17:44:22 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/25 17:45:05 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,14 @@ int		advanced_int_conv(t_flags data, int size, int nb)
 		i = 1;
 	if ((res = malloc(sizeof(char) * size + i + 1)) == NULL)
 		return (0);
-	while (i < data.preclen - ft_nblen(nb))
+	if (nb < 0)
+		res[0] = '-';
+	while (c++ < data.preclen - ft_nblen(nb))
 		res[i++] = '0';
 	tmp = ft_itoa(nb);
+	c = 0;
+	if (nb < 0)
+		c++;
 	while (tmp[c])
 		res[i++] = tmp[c++];
 	while (i < data.fillen)
@@ -164,7 +169,7 @@ int		int_conv(t_flags data, va_list arg)
 	if ((res = malloc(sizeof(char) * size + i + 1)) == NULL)
 		return (0);
 	if (nb < 0)
-		res[i] = '-';
+		res[0] = '-';
 	c = (data.fill = 1 && data.precision == 0) ? ft_nblen(nb) - 1 : -1;
 	if (nb < 0 && data.fillen > data.preclen)
 		c++;
@@ -203,6 +208,89 @@ void	string_conv(t_flags data, va_list arg)
 	free(res);
 }
 
+int		advanced_unsign_conv(t_flags data, int size, unsigned int nb)
+{
+	int		i;
+	int		c;
+	char	*res;
+	char	*tmp;
+
+	i = 0;
+	c = 0;
+	if (nb < 0)
+		i = 1;
+	if ((res = malloc(sizeof(char) * size + i + 1)) == NULL)
+		return (0);
+	if (nb < 0)
+		res[0] = '-';
+	while (c++ < data.preclen - ft_nblen(nb))
+		res[i++] = '0';
+	tmp = ft_itoa(nb);
+	c = 0;
+	if (nb < 0)
+		c++;
+	while (tmp[c])
+		res[i++] = tmp[c++];
+	while (i < data.fillen)
+		res[i++] = ' ';
+	res[i] = '\0';
+	ft_putstr(res);
+	return (1);
+}
+
+int		unsigned_conv(t_flags data, va_list arg)
+{
+	char			*res;
+	int				size;
+	int				i;
+	int				c;
+	unsigned int	nb;
+
+	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
+	nb = (unsigned int)va_arg(arg, unsigned int);
+	i = 0;
+	if (data.align == 1)
+		return (advanced_unsign_conv(data, size, nb));
+	if (nb < 0)
+		i = 1;
+	if ((res = malloc(sizeof(char) * size + i + 1)) == NULL)
+		return (0);
+	if (nb < 0)
+		res[i] = '-';
+	c = (data.fill == 1 && data.precision == 0) ? ft_nblen(nb) - 1 : -1;
+	if (nb < 0 && data.fillen > data.preclen)
+		c++;
+	while (++c < data.fillen - data.preclen)
+		res[i++] = (data.fill == 1 && data.precision == 0) ? '0' : ' ';
+	while (c++ < size - ft_nblen(nb))
+		res[i++] = '0';
+	res[i] = '\0';
+	ft_putstr(res);
+	ft_putstr(ft_itoa(nb));
+	return (1);
+}
+
+void	hex_print(t_flags data, va_list arg)
+{
+	uintptr_t	ptr;
+	int			i;
+	int			c;
+	int			size;
+
+	i = 0;
+	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
+	ptr = va_arg(arg, uintptr_t);
+	ft_putstr("0x");
+	c = (data.fill == 1 && data.precision == 0) ? 9 - 1  : -1;
+	if (data.fill == 1 && data.precision == 1 && data.fillen > data.preclen)
+		c++;
+	while (++c < data.fillen - data.preclen - 2)
+		ft_putchar('0');
+	while (c++ < size - 9)
+		ft_putchar('0');
+	ft_putnbr_base(ptr, "0123456789abcdef");
+}
+
 int		start_conv(t_flags data, va_list arg)
 {
 	int		nb;
@@ -213,8 +301,8 @@ int		start_conv(t_flags data, va_list arg)
 	}
 	else if (data.primary == 'd')
 	{
-		nb = va_arg(arg, int);
-		ft_putnbr(nb);
+		if (int_conv(data, arg) == 0)
+			return (0);
 	}
 	else if (data.primary == 'i')
 	{
@@ -225,6 +313,14 @@ int		start_conv(t_flags data, va_list arg)
 	{
 		nb = (int)va_arg(arg, int);
 		ft_putchar(nb);
+	}
+	else if (data.primary == 'u')
+	{
+		unsigned_conv(data, arg);
+	}
+	else if (data.primary == 'p')
+	{
+		hex_print(data, arg);
 	}
 	else
 	{
@@ -355,10 +451,34 @@ void	ft_printf(const char *str, ...)
 		return ;
 }
 
+/*void	putnbrr(int *nb)
+{
+	if (*nb == -2147483648)
+	{
+		ft_putchar('-');
+		ft_putnbr(214748364);
+		ft_putchar(8 + 48);
+	}
+	else if (*nb < 0)
+	{
+		ft_putchar('-');
+		ft_putnbr(*nb * -1);
+	}
+	else if (*nb < 10)
+	{
+		ft_putchar(*nb + 48);
+	}
+	else
+	{
+		ft_putnbr(*nb / 10);
+		ft_putchar(*nb % 10 + 48);
+	}
+}*/
+
 int		main(int argc, char **argv)
 {
 	(void)argc;
-	ft_printf(argv[1], 456);
-	printf(argv[1], 456);
+	ft_printf(argv[1], "salut");
+	printf(argv[1], "salut");
 	ft_putchar('\n');
 }

@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/22 13:43:34 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/25 17:45:07 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ void	ft_putnbr(int nb);
 int		ft_strlen(char *str);
 int		ft_atoi(char *str);
 char	*ft_strdup(const char *s1);
-char	*ft_itoa(int n);
+char	*ft_itoa(long long n);
 int		ft_abs(int nb);
-int		ft_nblen(int nb);
+int		ft_nblen(long long nb);
+void	ft_putnbr_base(uintptr_t nbr, char *base);
 
 #endif
