@@ -6,11 +6,11 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 04:58:17 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/26 15:57:22 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2020/12/04 04:59:44 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
 static int		ft_check(char *str)
 {
@@ -48,7 +48,7 @@ static void		ft_r_putnbr_base(long int nb, int div, char *base)
 	}
 }
 
-void			ft_long_putnbr_base(uintptr_t nbr, char *base)
+void			ft_putnbr_base(int nbr, char *base)
 {
 	int			i;
 	int			div;
