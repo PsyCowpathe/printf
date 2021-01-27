@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/25 17:45:07 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/26 15:49:33 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define FPRIMARY 9
 # define FSECONDARY 4
 
+#include "libft/libft.h"
 # include <stdbool.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -37,15 +38,18 @@ typedef struct	s_flags
 	int			width;
 }				t_flags;
 
-void	ft_putchar(char c);
-void	ft_putstr(char *str);
-void	ft_putnbr(int nb);
-int		ft_strlen(char *str);
-int		ft_atoi(char *str);
-char	*ft_strdup(const char *s1);
-char	*ft_itoa(long long n);
+char	*ft_long_itoa(long long n);
 int		ft_abs(int nb);
 int		ft_nblen(long long nb);
-void	ft_putnbr_base(uintptr_t nbr, char *base);
+void	ft_long_putnbr_base(uintptr_t nbr, char *base);
+int		cut_flags(t_flags data, va_list arg);
+int		flags_init(char **primary, char *plist, char **secondary, char *slist);
+int		int_conv(t_flags data, va_list arg);
+int		unsigned_conv(t_flags data, va_list arg);
+int		verif_flags(t_flags data, char *cut);
+void	string_conv(t_flags data, va_list arg);
+void	address_conv(t_flags data, va_list arg);
+void	hex_conv(t_flags data, va_list arg);
+int		ft_long_size_base(uintptr_t nbr, char *base);
 
 #endif

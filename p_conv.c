@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/26 16:37:43 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/27 15:59:40 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@ int		hex_size(int nb)
 	return (i);
 }
 
+void	advanced_hex_conv(t_flags data, int nb)
+{
+	int		i;
+	
+	if (data.primary == 'X')
+		ft_putnbr_base(nb, "0123456789ABCDEF");
+	else
+		ft_putnbr_base(nb, "0123456789abcdef");
+	i = hex_size(nb);
+	while (i++ < data.fillen)
+		ft_putchar(' ');
+}
+
 void	hex_conv(t_flags data, va_list arg)
 {
 	int		nb;
@@ -33,11 +46,20 @@ void	hex_conv(t_flags data, va_list arg)
 
 	i = 0;
 	nb = va_arg(arg, int);
-	size = (data.fillen > data.preclen) ? data.fillen : data.preclen;
+	size = (data.preclen > 0) ? data.preclen : data.fillen;
+	if (data.align == 1 && data.fill == 1 && data.precision == 0)
+	{
+		advanced_hex_conv(data,  nb);
+		return ;
+	}	
 	if (data.fill == 1 && data.precision == 1)
 	{
-		while (i++ < data.fillen - data.preclen)
+		i = hex_size(nb);
+		while (i < size)
+		{
 			ft_putchar(' ');
+			i++;
+		}
 		i = (i - 1) + hex_size(nb);
 		while (i++ < size)
 			ft_putchar('0');
@@ -45,8 +67,11 @@ void	hex_conv(t_flags data, va_list arg)
 	else
 	{
 		size = hex_size(nb);
-		while (i++ < data.fillen - size || i < data.preclen - size)
+		while (i < data.fillen - size || i < data.preclen - size)
+		{
 			ft_putchar('0');
+			i++;
+		}
 	}
 	if (data.primary == 'X')
 		ft_putnbr_base(nb, "0123456789ABCDEF");
