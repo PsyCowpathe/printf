@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/26 14:09:04 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/28 15:46:07 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,33 +41,6 @@ void	print_struct(t_flags data)
 	ft_putchar('\n');
 }
 
-void	string_conv(t_flags data, va_list arg)
-{
-	char	*res;
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = va_arg(arg, char *);
-	res = malloc(sizeof(char) * data.fillen + 1);
-	while (i < data.fillen - (int)ft_strlen(tmp))
-		res[i++] = (data.align == 1) ? ' ' : '0';
-	res[i] = '\0';
-	if (data.align == 1)
-	{
-		ft_putstr(tmp);
-		ft_putstr(res);
-	}
-	else
-	{
-		ft_putstr(res);
-		ft_putstr(tmp);
-	}
-	free(res);
-}
-
-
-
 void	ft_printf(const char *str, ...)
 {
 	va_list		arg;
@@ -84,7 +57,7 @@ void	ft_printf(const char *str, ...)
 int		main(int argc, char **argv)
 {
 	(void)argc;
-	ft_printf(argv[1], "salut");
-	printf(argv[1], "salut");
+	ft_printf(argv[1], 10, 156);
+	printf(argv[1], 10, 156);
 	ft_putchar('\n');
 }

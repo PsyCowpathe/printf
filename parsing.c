@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/26 14:06:36 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/28 15:46:05 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ int		flags_init(char **primary, char *plist, char **secondary, char *slist)
 	return (1);
 }
 
-int		get_nb(char *cut, int *i)
+int		get_nb(va_list arg, char *cut, int *i)
 {
 	int		c;
 	char	*tmp;
 
 	c = *i + 1;
+	if (cut[c] == '*')
+		return(va_arg(arg, int));
 	while (cut[c] && (cut[c] >= '0' && cut[c] <= '9'))
 		c++;
 	if ((tmp = malloc(sizeof(char) * c)) == NULL)
@@ -102,12 +104,11 @@ int		start_conv(t_flags data, va_list arg)
 		ft_putstr("pas encore fais");
 		va_arg(arg, void*);
 	}
-	return (0);
+	return (1);
 }
 
 int		set_struct(t_flags data, va_list arg, char *cut)
 {
-	(void)arg;
 	int		i;
 
 	i = 0;
@@ -127,19 +128,13 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 		else if (cut[i] == '0')
 		{
 			data.fill = 1;
-			if ((data.fillen = get_nb(cut, &i)) == -1)
+			if ((data.fillen = get_nb(arg, cut, &i)) == -1)
 				return (0);
 		}
 		else if (cut[i] == '.')
 		{
 			data.precision = 1;
-			if ((data.preclen = get_nb(cut, &i)) == -1)
-				return (0);
-		}
-		else if (cut[i] == '*')
-		{
-			data.size = 1;
-			if ((data.width = get_nb(cut, &i)) == -1)
+			if ((data.preclen = get_nb(arg, cut, &i)) == -1)
 				return (0);
 		}
 		i++;
@@ -150,6 +145,8 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 	//print_struct(data); //delete la fonction aussi
 	return (1);
 }
+
+
 
 int		cut_flags(t_flags data, va_list arg)
 {
@@ -175,6 +172,7 @@ int		cut_flags(t_flags data, va_list arg)
 				free(data.seclist);
 				return (0);
 			}
+			
 			len = 0;
 			while (data.form[i] && data.form[i] != '%')
 			{
@@ -207,8 +205,7 @@ int		cut_flags(t_flags data, va_list arg)
 			free(cut);
 		}
 		else
-	//	ft_putchar('\n');
-			i++;
+			ft_putchar(data.form[i++]);
 	}
 	return (1);
 }
