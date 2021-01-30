@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/28 15:46:07 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/30 16:20:30 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,8 @@ void	string_conv(t_flags data, va_list arg);
 void	address_conv(t_flags data, va_list arg);
 void	hex_conv(t_flags data, va_list arg);
 int		ft_long_size_base(uintptr_t nbr, char *base);
+int		is_vip(char *list, char c);
+int		set_struct(t_flags data, va_list arg, char *cut);
+
 
 #endif

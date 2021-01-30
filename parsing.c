@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/28 15:46:05 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/30 16:23:09 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,6 @@ int		start_conv(t_flags data, va_list arg)
 	{
 		hex_conv(data, arg);
 	}
-	else
-	{
-		ft_putstr("pas encore fais");
-		va_arg(arg, void*);
-	}
 	return (1);
 }
 
@@ -146,16 +141,13 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 	return (1);
 }
 
-
-
-int		cut_flags(t_flags data, va_list arg)
+/*int		cut_flags(t_flags data, va_list arg)
 {
 	int		i;
 	int		len;
 	int		ret;
 	char	*cut;
 	char	*save;
-
 
 	i = 0;
 	while (data.form[i])
@@ -208,4 +200,4 @@ int		cut_flags(t_flags data, va_list arg)
 			ft_putchar(data.form[i++]);
 	}
 	return (1);
-}
+}*/

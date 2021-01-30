@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:22:06 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/28 15:46:06 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/30 17:54:41 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ int		verif_flags(t_flags data, char *cut)
 	while (cut[i])
 	{
 		if (is_vip(data.primlist, cut[i]) == 1)
+		{
 			return (i);
+		}
 		if (is_vip(data.seclist, cut[i]) == 0 && !(cut[i] >= '0' && cut[i] <= '9'))
 			return (-1);
 		i++;
