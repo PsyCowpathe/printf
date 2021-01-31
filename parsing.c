@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/30 16:23:09 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/01/31 18:00:05 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,16 @@ int		get_nb(va_list arg, char *cut, int *i)
 		return (-1);
 	}
 	c = 0;
-	*i += 1;
+	if (cut[*i] < '0' || cut[*i] > '9')
+		*i += 1;
 	while (cut[*i] && (cut[*i] >= '0' && cut[*i] <= '9'))
 	{
 		tmp[c] = cut[*i];
 		*i += 1;
 		c++;
 	}
-	*i -= 1;
+	if (cut[*i] < '0' || cut[*i] > '9')
+		*i -= 1;
 	tmp[c] = '\0';
 	c = ft_atoi(tmp);
 	free(tmp);
@@ -114,9 +116,15 @@ int		set_struct(t_flags data, va_list arg, char *cut)
 	data.fillen = 0;
 	data.preclen = 0;
 	data.width = 0;
+	data.space = 0;
 	while (cut[i])
 	{
-		if (cut[i] == '-')
+		if (cut[i] >= '1' && cut[i] <= '9')
+		{
+			if ((data.space = get_nb(arg, cut, &i)) == -1)
+				return (0);
+		}
+		else if (cut[i] == '-')
 		{
 			data.align = 1;
 		}
