@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/28 14:32:52 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/01 17:49:55 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,26 @@ void	string_conv(t_flags data, va_list arg)
 	}
 	free(res);
 }
+
+/*void	address_conv(t_flags data, va_list arg)
+{
+	int			size;
+	int			i;
+	uintptr_t	ptr;
+
+	ptr = va_arg(arg, uintptr_t);
+	i = 0;
+	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
+	size = (data.space > size) ? data.space : size;
+	size -= 9;
+	while (i < size)
+	{
+		ft_putchar(' ');
+		i++;
+	}
+	ft_long_putnbr_base(ptr, "0123456789abcdef");
+}*/
+
 
 void	advanced_address_conv(t_flags data, va_list arg, uintptr_t ptr)
 {

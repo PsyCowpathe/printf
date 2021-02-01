@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/31 18:00:05 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/01 17:49:55 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,11 @@ int		start_conv(t_flags data, va_list arg)
 	}
 	else if (data.primary == 'd')
 	{
-		if (int_conv(data, arg) == 0)
-			return (0);
+		int_conv(data, arg);
 	}
 	else if (data.primary == 'i')
 	{
-		if (int_conv(data, arg) == 0)
-			return (0);
+		int_conv(data, arg);
 	}
 	else if (data.primary == 'c')
 	{

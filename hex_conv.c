@@ -6,17 +6,19 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/01/28 15:46:06 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/01 15:31:48 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		hex_size(int nb)
+int		hex_size(unsigned int nb)
 {
 	int		i;
 
 	i = 0;
+	if (nb < 0)
+		nb = 4294967295 - nb;
 	while (nb > 0)
 	{
 		nb = nb / 16;
@@ -25,69 +27,53 @@ int		hex_size(int nb)
 	return (i);
 }
 
-void	print_hex(int nb, char c)
+void	print_hex(unsigned int nb, char c)
 {
 	if (c == 'X')
-		ft_putnbr_base(nb, "0123456789ABCDEF");
+		ft_long_putnbr_base(nb, "0123456789ABCDEF");
 	else
-		ft_putnbr_base(nb, "0123456789abcdef");
-
+		ft_long_putnbr_base(nb, "0123456789abcdef");
 }
 
-void	advanced_hex_conv(t_flags data, int nb)
+void	advanced_hex_conv(t_flags data, int size, unsigned int nb)
 {
 	int		i;
-	int		size;
 
-	size = (data.fillen > data.preclen) ? data.fillen : data.preclen;
-	if (data.fill == 1 && data.precision == 0)
-		print_hex(nb, data.primary);
-	i = hex_size(nb) - 1;
-	if (data.fillen > data.preclen)
+	i = 0;
+	while (i < data.preclen - hex_size(nb))
 	{
-		while (++i < data.preclen)
-			ft_putchar('0');
-		if (data.fill == 1 && data.precision == 1)
-			print_hex(nb, data.primary);
-		while (i++ < data.fillen)
-			ft_putchar(' ');
+		ft_putchar('0');
+		i++;
 	}
-	else
+	print_hex(nb, data.primary);
+	while (i < size)
 	{
-		while (++i < size)
-			ft_putchar((data.fillen > data.preclen) ? ' ' : '0');
-		if (!(data.fill == 1 && data.precision == 0))
-			print_hex(nb, data.primary);
+		ft_putchar(' ');
+		i++;
 	}
 }
 
 void	hex_conv(t_flags data, va_list arg)
 {
-	int		i;
-	int		size;
-	int		nb;
-	int		wich;
+	unsigned int	nb;
+	int				i;
+	int				size;
 
-	nb = va_arg(arg, int);
-	i = hex_size(nb);
-	size = (data.fillen > data.preclen) ? data.fillen : data.preclen;
-	wich = data.fillen - (data.preclen - hex_size(nb));
+	i = 0;
+	nb = (unsigned int)va_arg(arg, unsigned int);
+	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
+	size = (data.space > size) ? data.space : size;
+	size -= hex_size(nb);
 	if (data.align == 1)
-	{
-		advanced_hex_conv(data, nb);
-		return ;
-	}
+		return (advanced_hex_conv(data, size, nb));
 	while (i < size)
 	{
-		if (data.fill == 1 && data.precision == 0)
-			ft_putchar('0');
+		if ((data.precision == 1 && i < data.fillen - data.preclen)
+		|| i < data.space - data.preclen)
+			ft_putchar(' ');
 		else
-			ft_putchar((i < wich) ? ' ' : '0');
+			ft_putchar('0');
 		i++;
 	}
-	if (data.primary == 'X')
-		ft_putnbr_base(nb, "0123456789ABCDEF");
-	else
-		ft_putnbr_base(nb, "0123456789abcdef");
+	print_hex(nb, data.primary);
 }
-
