@@ -6,105 +6,82 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/01 17:49:55 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/02 17:17:17 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	string_conv(t_flags data, va_list arg)
+void	char_conv(t_flags data, va_list arg)
 {
-	char	*res;
-	char	*tmp;
+	int		size;
 	int		i;
+	int		nb;
 
-	i = 0;
-	tmp = va_arg(arg, char *);
-	res = malloc(sizeof(char) * data.fillen + 1);
-	while (i < data.fillen - (int)ft_strlen(tmp))
-		res[i++] = (data.align == 1) ? ' ' : '0';
-	res[i] = '\0';
-	if (data.align == 1)
-	{
-		ft_putstr(tmp);
-		ft_putstr(res);
-	}
-	else
-	{
-		ft_putstr(res);
-		ft_putstr(tmp);
-	}
-	free(res);
-}
-
-/*void	address_conv(t_flags data, va_list arg)
-{
-	int			size;
-	int			i;
-	uintptr_t	ptr;
-
-	ptr = va_arg(arg, uintptr_t);
-	i = 0;
 	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
 	size = (data.space > size) ? data.space : size;
-	size -= 9;
-	while (i < size)
-	{
-		ft_putchar(' ');
-		i++;
-	}
-	ft_long_putnbr_base(ptr, "0123456789abcdef");
-}*/
-
-
-void	advanced_address_conv(t_flags data, va_list arg, uintptr_t ptr)
-{
-	(void)data;
-	(void)arg;
-	(void)ptr;
-	int		i;
-
 	i = 0;
-	ft_putstr("0x");
-	while (i < data.preclen - 9)
-	{
-		ft_putchar('0');
-		i++;
-	}
-	ft_long_putnbr_base(ptr, "0123456789abcdef");
-	while (i < data.fillen - 9 - 2)
+	nb = va_arg(arg, int);
+	if (data.align == 1)
+		ft_putchar(nb);
+	while (i < size - 1)
 	{
 		ft_putchar(' ');
 		i++;
 	}
+	if (data.align == 0)
+		ft_putchar(nb);
+}
+
+void	string_conv(t_flags data, va_list arg)
+{
+	int		i;
+	int		c;
+	char	*tmp;
+	int		size;
+
+	c = 0;
+	tmp = va_arg(arg, char *);
+	i = -1;
+	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
+	size = (data.space > size) ? data.space : size;
+	if (data.space > 0 && data.precision == 1 && data.fill == 0)
+		size = data.space;
+	while (data.align == 1 && tmp[c] && c < size)
+		ft_putchar(tmp[c++]);
+	while (++i + (int)ft_strlen(tmp) < size)
+		ft_putchar(' ');
+	while (data.align == 0 && c + i < size)
+		ft_putchar(tmp[c++]);
 }
 
 void	address_conv(t_flags data, va_list arg)
 {
-	uintptr_t	ptr;
 	int			i;
+	int			size;
+	uintptr_t	ptr;
+	uintptr_t	cpy;
 
 	i = 0;
 	ptr = va_arg(arg, uintptr_t);
+	cpy = ptr;
+	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
+	size = (data.space > size) ? data.space - 2 : size - 2;
 	if (data.align == 1)
 	{
-		advanced_address_conv(data, arg, ptr);
-		return ;
+		ft_putstr("0x");
+		ft_long_putnbr_base(ptr, "0123456789abcdef");
 	}
-	if (data.fill == 1 && data.precision == 1 && data.preclen >= 9)
-		while (i++ < data.fillen - data.preclen - 2)
-			ft_putchar(' ');
-	else if (data.fill == 1 && data.precision == 1)
-		while (i++ < data.fillen - 9 - 2)
-			ft_putchar(' ');
-	if (data.fill == 1 && data.precision == 1)
-		i--;
-	ft_putstr("0x");
-	while (i++ < data.preclen - 9)
-		ft_putchar('0');
-	i--;
-	while (i++ < data.fillen - 9 - 2)
-		ft_putchar('0');
-	ft_long_putnbr_base(ptr, "0123456789abcdef");
-	return ;
+	while (cpy > 0)
+	{
+		cpy /= 16;
+		size--;
+	}
+	while (i++ < size)
+		ft_putchar(' ');
+	if (data.align == 0)
+	{
+		ft_putstr("0x");
+		ft_long_putnbr_base(ptr, "0123456789abcdef");
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/01 17:49:55 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/02 17:17:16 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,37 +68,20 @@ int		get_nb(va_list arg, char *cut, int *i)
 
 int		start_conv(t_flags data, va_list arg)
 {
-	int		nb;
-
 	if (data.primary == 's')
-	{
 		string_conv(data, arg);
-	}
 	else if (data.primary == 'd')
-	{
 		int_conv(data, arg);
-	}
 	else if (data.primary == 'i')
-	{
 		int_conv(data, arg);
-	}
 	else if (data.primary == 'c')
-	{
-		nb = (int)va_arg(arg, int);
-		ft_putchar(nb);
-	}
+		char_conv(data, arg);
 	else if (data.primary == 'u')
-	{
 		unsigned_conv(data, arg);
-	}
 	else if (data.primary == 'p')
-	{
 		address_conv(data, arg);
-	}
 	else if (data.primary == 'x' || data.primary == 'X')
-	{
 		hex_conv(data, arg);
-	}
 	return (1);
 }
 
