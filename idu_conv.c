@@ -1,24 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   idu_conv.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 12:34:10 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 12:37:18 by agirona          ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
 /*   id_conv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 12:33:46 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/04 17:17:52 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +66,7 @@ void	advanced_int_conv(t_flags *data, int size, int nb)
 	int		i;
 	int		max;
 
+	//ft_putstr("advanced");
 	i = 0;
 	max = data->preclen - ft_longlen(nb);
 	while (i < max)
@@ -94,7 +83,7 @@ void	advanced_int_conv(t_flags *data, int size, int nb)
 	data->total += i + ft_longlen(nb);
 }
 
-void	int_conv(t_flags *data, va_list arg)
+/*void	int_conv(t_flags *data, va_list arg)
 {
 	int		size;
 	int		i;
@@ -126,4 +115,49 @@ void	int_conv(t_flags *data, va_list arg)
 	}
 	ft_putnbr(nb);
 	data->total += i + ft_longlen(nb);
+}*/
+
+void	int_conv(t_flags *data, va_list arg)
+{
+	int		i;
+	int		size;
+	int		nb;
+	int		neg;
+
+	i = 0;
+	neg = 0;
+	if ((nb = (int)va_arg(arg, int)) < 0)
+	{
+		nb = ft_abs(nb);
+		neg = 1;
+	}
+	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
+	size = (data->space > size) ? data->space : size;
+	size = size - ft_longlen(nb);
+	if (data->align == 1)
+		return (advanced_int_conv(data, size, nb));
+	if (data->fillen > data->preclen)
+		size--;
+	while (i < (data->fillen - data->preclen) - neg)
+	{
+		ft_putchar(' ');
+		i++;
+	}
+	while (i < (data->preclen - data->fillen) - neg)
+	{
+		ft_putchar(' ');
+		i++;
+	}
+	if (neg == 1)
+		ft_putchar('-');
+	while (i < size)
+	{
+		ft_putchar('0');
+		i++;
+	}
+	if (data->precision == 1 && data->preclen == 0 && nb == 0)
+		data->total--;
+	else
+		ft_putnbr(nb);
+	data->total += i + ft_longlen(nb) + neg;
 }

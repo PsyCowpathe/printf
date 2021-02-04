@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 12:37:23 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/04 17:17:55 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ void	mainprintf()
 {
 	int		ret;
 	int		nb;
-	char	param[] = " *%*.*i";
-
+	char	param[] = "%0*i";
+	//char	param[] = " *%-*.*i* *%*.*i* ";
 	nb = 1;
 
 	ft_putstr("Moi = ");
-	ret = ft_printf(param, -6, 2, 102);
+	ret = ft_printf(param, 21, -1011);
 	ft_putstr("| retour = ");
 	ft_putnbr(ret);
 	ft_putchar('\n');
 	ft_putstr("Lui = ");
-	ret = dprintf(1, param, -6, 2, 102);
+	ret = dprintf(1, param, 21, -1011);
 	ft_putstr("| retour = ");
 	ft_putnbr(ret);
 }
