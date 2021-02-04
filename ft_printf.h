@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/02 17:17:16 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/04 12:37:23 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,31 @@ typedef struct	s_flags
 	char		*primlist;
 	char		*seclist;
 	char		primary;
-	int			len;
 	bool		align;
 	bool		fill;
 	int			fillen;
 	bool		precision;
 	int			preclen;
-	bool		size;
-	int			width;
 	int			space;
+	int			total;
 }				t_flags;
 
+int		ft_printf(const char *str, ...);
 char	*ft_long_itoa(long long n);
-int		ft_abs(int nb);
-int		ft_nblen(long long nb);
 void	ft_long_putnbr_base(uintptr_t nbr, char *base);
 int		cut_flags(t_flags data, va_list arg);
 int		flags_init(char **primary, char *plist, char **secondary, char *slist);
-void	int_conv(t_flags data, va_list arg);
-void	unsigned_conv(t_flags data, va_list arg);
+void	int_conv(t_flags *data, va_list arg);
+void	unsigned_conv(t_flags *data, va_list arg);
 int		verif_flags(t_flags data, char *cut);
-void	string_conv(t_flags data, va_list arg);
-void	address_conv(t_flags data, va_list arg);
-void	hex_conv(t_flags data, va_list arg);
+void	string_conv(t_flags *data, va_list arg);
+void	address_conv(t_flags *data, va_list arg);
+void	hex_conv(t_flags *data, va_list arg);
 int		ft_long_size_base(uintptr_t nbr, char *base);
-int		is_vip(char *list, char c);
-int		set_struct(t_flags data, va_list arg, char *cut);
-void	char_conv(t_flags data, va_list arg);
+void	char_conv(t_flags *data, va_list arg);
+int		print_percent(char *form, int *i);
+void	struct_init(t_flags *data);
+
+void	print_struct(t_flags data);
 
 #endif

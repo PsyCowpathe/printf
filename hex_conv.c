@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/01 15:31:48 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/04 12:37:20 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,17 @@ void	print_hex(unsigned int nb, char c)
 		ft_long_putnbr_base(nb, "0123456789abcdef");
 }
 
-void	advanced_hex_conv(t_flags data, int size, unsigned int nb)
+void	advanced_hex_conv(t_flags *data, int size, unsigned int nb)
 {
 	int		i;
 
 	i = 0;
-	while (i < data.preclen - hex_size(nb))
+	while (i < data->preclen - hex_size(nb))
 	{
 		ft_putchar('0');
 		i++;
 	}
-	print_hex(nb, data.primary);
+	print_hex(nb, data->primary);
 	while (i < size)
 	{
 		ft_putchar(' ');
@@ -53,7 +53,7 @@ void	advanced_hex_conv(t_flags data, int size, unsigned int nb)
 	}
 }
 
-void	hex_conv(t_flags data, va_list arg)
+void	hex_conv(t_flags *data, va_list arg)
 {
 	unsigned int	nb;
 	int				i;
@@ -61,19 +61,20 @@ void	hex_conv(t_flags data, va_list arg)
 
 	i = 0;
 	nb = (unsigned int)va_arg(arg, unsigned int);
-	size = (data.preclen > data.fillen) ? data.preclen : data.fillen;
-	size = (data.space > size) ? data.space : size;
+	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
+	size = (data->space > size) ? data->space : size;
+	data->total += size;
 	size -= hex_size(nb);
-	if (data.align == 1)
+	if (data->align == 1)
 		return (advanced_hex_conv(data, size, nb));
 	while (i < size)
 	{
-		if ((data.precision == 1 && i < data.fillen - data.preclen)
-		|| i < data.space - data.preclen)
+		if ((data->precision == 1 && i < data->fillen - data->preclen)
+		|| i < data->space - data->preclen)
 			ft_putchar(' ');
 		else
 			ft_putchar('0');
 		i++;
 	}
-	print_hex(nb, data.primary);
+	print_hex(nb, data->primary);
 }

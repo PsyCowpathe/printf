@@ -6,35 +6,61 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:22:06 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/01 17:49:56 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/04 12:37:21 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		ft_abs(int  nb)
+int		print_percent(char *form, int *i)
 {
-	if (nb < 0)
-		return (nb * -1);
-	else
-		return (nb); 
+	int		count;
+	int		save;
+	int		print;
+
+	save = *i;
+	count = 0;
+	print = 0;
+	while (form[*i] == '%')
+	{
+		count++;
+		*i += 1;
+	}
+	if (count % 2 == 0)
+	{
+		while (count > 0)
+		{
+			ft_putchar('%');
+			print++;
+			count -= 2;
+		}
+		while (form[*i] && form[*i] != '%')
+		{
+			ft_putchar(form[*i]);
+			print++;
+			*i += 1;
+		}
+	}
+	*i -= 1;
+	return (print);
 }
 
-int		ft_nblen(long long nb)
+int		verif_flags(t_flags data, char *cut)
 {
-	int		len;
+	int		i;
 
-	len = 0;
-	if (nb < 0)
-		nb = ft_abs(nb);
-	if (nb == 0)
-		return (1);
-	while (nb > 0)
+	i = 0;
+	while (cut[i])
 	{
-		nb = nb / 10;
-		len++;
+		if (ft_ischar(data.primlist, cut[i]) == 1)
+		{
+			return (i);
+		}
+		if (ft_ischar(data.seclist, cut[i]) == 0 && !(cut[i] >= '0' && cut[i] <= '9'))
+			return (-1);
+		i++;
 	}
-	return (len);
+	return (-1);
 }
 
 char	*ft_long_itoa(long long n)
@@ -63,36 +89,3 @@ char	*ft_long_itoa(long long n)
 	}
 	return (res);
 }
-
-int		is_vip(char *list, char c)
-{
-	int		i;
-
-	i = 0;
-	while (list[i])
-	{
-		if (c == list[i])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int		verif_flags(t_flags data, char *cut)
-{
-	int		i;
-
-	i = 0;
-	while (cut[i])
-	{
-		if (is_vip(data.primlist, cut[i]) == 1)
-		{
-			return (i);
-		}
-		if (is_vip(data.seclist, cut[i]) == 0 && !(cut[i] >= '0' && cut[i] <= '9'))
-			return (-1);
-		i++;
-	}
-	return (-1);
-}
-

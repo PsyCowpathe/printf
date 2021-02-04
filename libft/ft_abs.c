@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnew_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_abs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/26 13:03:34 by agirona           #+#    #+#             */
-/*   Updated: 2020/12/04 01:00:15 by agirona          ###   ########lyon.fr   */
+/*   Created: 2021/02/04 06:39:11 by agirona           #+#    #+#             */
+/*   Updated: 2021/02/04 06:39:45 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strnew(size_t size)
+int		ft_abs(int  nb)
 {
-	size_t	i;
-	char	*dest;
-
-	i = 0;
-	if (!(dest = (char *)malloc(size + 1)))
-		return (0);
-	while (i < size)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	if (nb < 0)
+		return (nb * -1);
+	else
+		return (nb);
 }

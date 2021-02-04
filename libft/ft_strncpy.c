@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/26 13:07:00 by agirona           #+#    #+#             */
-/*   Updated: 2020/12/04 01:04:29 by agirona          ###   ########lyon.fr   */
+/*   Created: 2020/12/04 04:56:56 by agirona           #+#    #+#             */
+/*   Updated: 2021/02/04 08:45:06 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr(int nb)
+char	*ft_strncpy(char *dest, char *src, unsigned int n)
 {
-	if (nb == -2147483648)
+	unsigned int	i;
+
+	i = 0;
+	while (src[i] && i != n)
 	{
-		ft_putchar('-');
-		ft_putnbr(214748364);
-		ft_putchar(8 + 48);
+		dest[i] = src[i];
+		i++;
 	}
-	else if (nb < 0)
+	if ((i = ft_strlen(src)) < n)
 	{
-		ft_putchar('-');
-		ft_putnbr(nb * -1);
+		while (i < n)
+			dest[i++] = '\0';
 	}
-	else if (nb > 9)
-	{
-		ft_putnbr(nb / 10);
-		ft_putchar(nb % 10 + 48);
-	}
-	else
-		ft_putchar(nb + 48);
+	return (dest);
 }
