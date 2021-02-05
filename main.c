@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 17:17:55 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/05 16:49:53 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-void	mainprintf()
+/*void	mainprintf()
 {
 	int		ret;
 	int		nb;
@@ -38,7 +38,7 @@ int		main(void)
 	mainprintf();
 	//while (1);
 	return (1);
-}
+}*/
 
 /*int		mainprintf()
 {

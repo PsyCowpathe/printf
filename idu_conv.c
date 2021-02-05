@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 17:17:52 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/05 16:49:51 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	advanced_int_conv(t_flags *data, int size, int nb)
 	data->total += i + ft_longlen(nb);
 }*/
 
-void	int_conv(t_flags *data, va_list arg)
+/*void	int_conv(t_flags *data, va_list arg)
 {
 	int		i;
 	int		size;
@@ -160,4 +160,94 @@ void	int_conv(t_flags *data, va_list arg)
 	else
 		ft_putnbr(nb);
 	data->total += i + ft_longlen(nb) + neg;
+}*/
+
+void	int_conv(t_flags *data, va_list arg)
+{
+	int		i;
+	int		size;
+	int		nb;
+	int		neg;
+
+	i = 0;
+	neg = 0;
+	nb = (int)va_arg(arg, int);
+	if (nb < 0)
+	{
+		nb = ft_abs(nb);
+		neg = 1;
+	}
+	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
+	size = (data->space > size) ? data->space : size;
+	size = size - ft_longlen(nb) - neg;
+	if (data->precision == 1 && data->fill == 0 && data->space > 0)
+	{
+		if (neg == 1 && data->space <= data->preclen)
+			size++;
+		while (i < size)
+		{
+			if (i < data->space - data->preclen - neg)
+				ft_putchar(' ');
+			else
+			{
+				if (--neg == 0)
+					ft_putchar('-');
+				ft_putchar('0');
+			}
+			i++;
+		}
+	}
+	if (data->precision == 1 && data->fill == 1 && data->space == 0)
+	{
+		if (neg == 1 && data->preclen >= data->fillen)
+			size++;
+		while (i < size)
+		{
+			if (i < data->fillen - data->preclen - neg)
+				ft_putchar(' ');
+			else
+			{
+				if (--neg == 0)
+					ft_putchar('-');
+				ft_putchar('0');
+			}
+			i++;
+		}
+	}
+	ft_putnbr(nb);
+	/*
+	if (data->prec == 0 && data->fill == 1 && data->space > 0)
+	if (data->prec == 0 && data->fill == 1 && data->space == 0)
+	if (data->prec == 1 && data->fill == 0 && data->space == 0)
+	if (data->prec == 0 && data->fill == 0 && data->space > 0)*/
+
 }
+
+#include <stdio.h>
+#include <limits.h>
+
+void	mainprintf()
+{
+	int		ret;
+	int		nb;
+	char	param[] = "%020.10i";
+	nb = 1;
+
+	ft_putstr("Moi = ");
+	ret = ft_printf(param, 1011);
+	ft_putstr("| retour = ");
+	ft_putnbr(ret);
+	ft_putchar('\n');
+	ft_putstr("Lui = ");
+	ret = dprintf(1, param, 1011);
+	ft_putstr("| retour = ");
+	ft_putnbr(ret);
+}
+
+int		main(void)
+{
+	mainprintf();
+	//while (1);
+	return (1);
+}
+
