@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/05 16:49:51 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/06 16:25:01 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,7 @@ void	unsigned_conv(t_flags *data, va_list arg)
 	free(tmp);
 }
 
-void	advanced_int_conv(t_flags *data, int size, int nb)
-{
-	int		i;
-	int		max;
 
-	//ft_putstr("advanced");
-	i = 0;
-	max = data->preclen - ft_longlen(nb);
-	while (i < max)
-	{
-		ft_putchar('0');
-		i++;
-	}
-	ft_putnbr(nb);
-	while (i < size)
-	{
-		ft_putchar(' ');
-		i++;
-	}
-	data->total += i + ft_longlen(nb);
-}
 
 /*void	int_conv(t_flags *data, va_list arg)
 {
@@ -162,6 +142,42 @@ void	advanced_int_conv(t_flags *data, int size, int nb)
 	data->total += i + ft_longlen(nb) + neg;
 }*/
 
+void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
+{
+	int		i;
+	int		print;
+
+	i = 0;
+	print = 1;
+	if (data->precision == 1 && data->fill == 0 && data->space > 0)
+	{
+		if (neg == 1)
+			ft_putchar('-');
+		if (neg == 1 && data->preclen >= data->space)
+			size++;
+		while (i < size)
+		{
+			if (i < data->preclen - ft_longlen(nb))
+				ft_putchar('0');
+			else
+			{
+				if (print == 1)
+				{
+					print = 0;
+					ft_putnbr(nb);
+				}
+				ft_putchar(' ');
+			}
+			i++;
+		}
+		if (print == 1)
+			ft_putnbr(nb);
+	}
+	if (data->precision == 1 && data->fill == 0 && data->space == 0)
+	//ft_putnbr(nb);
+	data->total += i + ft_longlen(nb);
+}
+
 void	int_conv(t_flags *data, va_list arg)
 {
 	int		i;
@@ -176,10 +192,13 @@ void	int_conv(t_flags *data, va_list arg)
 	{
 		nb = ft_abs(nb);
 		neg = 1;
+		data->total++;
 	}
 	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
 	size = (data->space > size) ? data->space : size;
 	size = size - ft_longlen(nb) - neg;
+	if (data->align == 1)
+		return (advanced_int_conv(data, size, nb, neg));
 	if (data->precision == 1 && data->fill == 0 && data->space > 0)
 	{
 		if (neg == 1 && data->space <= data->preclen)
@@ -214,40 +233,40 @@ void	int_conv(t_flags *data, va_list arg)
 			i++;
 		}
 	}
+	if (data->precision == 0 && data->fill == 1 && data->space == 0)
+	{
+		if (neg == 1)
+			ft_putchar('-');
+		while (i < size)
+		{
+			ft_putchar('0');
+			i++;
+		}
+	}
+	if (data->precision == 1 && data->fill == 0 && data->space == 0)
+	{
+		if (data->preclen == 0 && nb == 0)
+			return ;
+		if (neg == 1)
+			size++;
+		if (neg == 1)
+			ft_putchar('-');
+		while (i < size)
+		{
+			ft_putchar('0');
+			i++;
+		}
+	}
+	if (data->precision == 0 && data->fill == 0 && data->space > 0)
+	{
+		while (i < size)
+		{
+			ft_putchar(' ');
+			i++;
+		}
+	}
+	if (neg == 1)
+		ft_putchar('-');
 	ft_putnbr(nb);
-	/*
-	if (data->prec == 0 && data->fill == 1 && data->space > 0)
-	if (data->prec == 0 && data->fill == 1 && data->space == 0)
-	if (data->prec == 1 && data->fill == 0 && data->space == 0)
-	if (data->prec == 0 && data->fill == 0 && data->space > 0)*/
-
+	data->total += i + ft_longlen(nb);
 }
-
-#include <stdio.h>
-#include <limits.h>
-
-void	mainprintf()
-{
-	int		ret;
-	int		nb;
-	char	param[] = "%020.10i";
-	nb = 1;
-
-	ft_putstr("Moi = ");
-	ret = ft_printf(param, 1011);
-	ft_putstr("| retour = ");
-	ft_putnbr(ret);
-	ft_putchar('\n');
-	ft_putstr("Lui = ");
-	ret = dprintf(1, param, 1011);
-	ft_putstr("| retour = ");
-	ft_putnbr(ret);
-}
-
-int		main(void)
-{
-	mainprintf();
-	//while (1);
-	return (1);
-}
-
