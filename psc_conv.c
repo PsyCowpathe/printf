@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 12:37:21 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/07 17:17:55 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,21 @@ void	char_conv(t_flags *data, va_list arg)
 	i = 0;
 	nb = va_arg(arg, int);
 	if (data->align == 1)
+	{
 		ft_putchar(nb);
+		data->total++;
+	}
 	while (i < size - 1)
 	{
 		ft_putchar(' ');
 		i++;
 	}
 	if (data->align == 0)
+	{
 		ft_putchar(nb);
+		data->total++;
+	}
+	data->total += i;
 }
 
 void	string_conv(t_flags *data, va_list arg)
@@ -45,18 +52,13 @@ void	string_conv(t_flags *data, va_list arg)
 	i = -1;
 	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
 	size = (data->space > size) ? data->space : size;
-	if (data->space > 0 && data->precision == 1 && data->fill == 0)
-		size = data->space;
-	while (data->align == 1 && tmp[c] && c < size)
-		ft_putchar(tmp[c++]);
-	while (++i + (int)ft_strlen(tmp) < size)
-	{
+	if (data->align == 1)
+		ft_putstr(tmp);
+	while (++i < size - (int)ft_strlen(tmp))
 		ft_putchar(' ');
-		data->total++;
-	}
-	while (data->align == 0 && c + i < size)
-		ft_putchar(tmp[c++]);
-	data->total += c;
+	if (data->align == 0)
+		ft_putstr(tmp);
+	data->total += i + ft_strlen(tmp);
 }
 
 void	address_conv(t_flags *data, va_list arg)

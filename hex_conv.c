@@ -6,11 +6,13 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 12:37:20 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/07 15:46:33 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+#include <stdio.h>
 
 int		hex_size(unsigned int nb)
 {
@@ -19,6 +21,8 @@ int		hex_size(unsigned int nb)
 	i = 0;
 	if (nb < 0)
 		nb = 4294967295 - nb;
+	if (nb == 0)
+		return (1);
 	while (nb > 0)
 	{
 		nb = nb / 16;
@@ -27,7 +31,7 @@ int		hex_size(unsigned int nb)
 	return (i);
 }
 
-void	print_hex(unsigned int nb, char c)
+void	print_hex(long long nb, char c)
 {
 	if (c == 'X')
 		ft_long_putnbr_base(nb, "0123456789ABCDEF");
@@ -45,12 +49,16 @@ void	advanced_hex_conv(t_flags *data, int size, unsigned int nb)
 		ft_putchar('0');
 		i++;
 	}
-	print_hex(nb, data->primary);
+	if (nb == 0 && data->precision == 1 && data->preclen == 0)
+		i--;
+	else
+		print_hex(nb, data->primary);
 	while (i < size)
 	{
 		ft_putchar(' ');
 		i++;
 	}
+	data->total += i + hex_size(nb);
 }
 
 void	hex_conv(t_flags *data, va_list arg)
@@ -63,8 +71,9 @@ void	hex_conv(t_flags *data, va_list arg)
 	nb = (unsigned int)va_arg(arg, unsigned int);
 	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
 	size = (data->space > size) ? data->space : size;
-	data->total += size;
 	size -= hex_size(nb);
+	if (nb == 0 && data->precision == 1 && data->preclen == 0)
+		i--;
 	if (data->align == 1)
 		return (advanced_hex_conv(data, size, nb));
 	while (i < size)
@@ -76,5 +85,7 @@ void	hex_conv(t_flags *data, va_list arg)
 			ft_putchar('0');
 		i++;
 	}
-	print_hex(nb, data->primary);
+	data->total += i + hex_size(nb);	
+	if (!(nb == 0 && data->precision == 1 && data->preclen == 0))
+		print_hex(nb, data->primary);
 }
