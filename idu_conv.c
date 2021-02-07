@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/07 13:23:44 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/07 14:25:56 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,209 +61,60 @@ void	unsigned_conv(t_flags *data, va_list arg)
 	free(tmp);
 }
 
-
-
-/*void	int_conv(t_flags *data, va_list arg)
-{
-	int		size;
-	int		i;
-	int		nb;
-
-	nb = (int)va_arg(arg, int);
-	if (data->precision == 1 && data->preclen == 0)
-		return ;
-	i = 0;
-	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
-	size = (data->space > size) ? data->space : size;
-	size -= ft_longlen(nb);
-	if (nb < 0)
-	{
-		ft_putchar('-');
-		nb = ft_abs(nb);
-		data->total++;
-	}
-	if (data->align == 1)
-		return (advanced_int_conv(data, size, nb));
-	while (i < size)
-	{
-		if ((data->precision == 1 && i < data->fillen - data->preclen)
-		|| i < data->space - data->preclen)
-			ft_putchar(' ');
-		else
-			ft_putchar('0');
-		i++;	
-	}
-	ft_putnbr(nb);
-	data->total += i + ft_longlen(nb);
-}*/
-
-/*void	int_conv(t_flags *data, va_list arg)
-{
-	int		i;
-	int		size;
-	int		nb;
-	int		neg;
-
-	i = 0;
-	neg = 0;
-	if ((nb = (int)va_arg(arg, int)) < 0)
-	{
-		nb = ft_abs(nb);
-		neg = 1;
-	}
-	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
-	size = (data->space > size) ? data->space : size;
-	size = size - ft_longlen(nb);
-	if (data->align == 1)
-		return (advanced_int_conv(data, size, nb));
-	if (data->fillen > data->preclen)
-		size--;
-	while (i < (data->fillen - data->preclen) - neg)
-	{
-		ft_putchar(' ');
-		i++;
-	}
-	while (i < (data->preclen - data->fillen) - neg)
-	{
-		ft_putchar(' ');
-		i++;
-	}
-	if (neg == 1)
-		ft_putchar('-');
-	while (i < size)
-	{
-		ft_putchar('0');
-		i++;
-	}
-	if (data->precision == 1 && data->preclen == 0 && nb == 0)
-		data->total--;
-	else
-		ft_putnbr(nb);
-	data->total += i + ft_longlen(nb) + neg;
-}*/
-
 void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
 {
 	int		i;
 	int		print;
 
-	i = 0;
+	i = -1;
 	print = 1;
-	if (data->precision == 1 && data->fill == 0 && data->space > 0)
+	if (neg == 1)
+		ft_putchar('-');
+	if (nb == 0 && data->preclen == 0)
 	{
-		if (nb == 0 && data->preclen == 0)
-		{
-			print = 0;
-			i--;
-		}
-		if (neg == 1)
-			ft_putchar('-');
-		if (neg == 1 && data->preclen >= data->space)
-			size++;
-		while (i < size)
-		{
-			if (i < data->preclen - ft_longlen(nb))
-				ft_putchar('0');
-			else
-			{
-				if (print == 1)
-				{
-					print = 0;
-					ft_putnbr(nb);
-				}
-				ft_putchar(' ');
-			}
-			i++;
-		}
-		if (print == 1)
-			ft_putnbr(nb);
+		i--;
+		print = 0;
 	}
 	if (data->precision == 1 && data->fill == 0 && data->space == 0)
 	{
 		if (neg == 1)
-		{
-			ft_putchar('-');
 			size++;
-		}
-		while (i < size)
-		{
+		while (++i < size)
 			ft_putchar('0');
-			i++;
-		}
-		ft_putnbr(nb);
-	}
-	if (data->precision == 1 && data->fill == 1 && data->space == 0)
-	{
-		if (nb == 0 && data->preclen == 0)
-		{
-			print = 0;
-			i--;
-		}
-		if (neg == 1)
-			ft_putchar('-');
-		if (neg == 1 && data->preclen >= data->fillen)
-			size++;
-		while (i < size)
-		{
-			if (i < data->preclen - ft_longlen(nb))
-				ft_putchar('0');
-			else
-			{
-				if (print == 1)
-				{
-					print = 0;
-					ft_putnbr(nb);
-				}
-				ft_putchar(' ');
-			}
-			i++;
-		}
-		if (print == 1)
-			ft_putnbr(nb);
-
-	}
-	if (data->precision == 1 && data->fill == 1 && data->space > 0)
-	{
-		if (neg == 1)
-			ft_putchar('-');
-		if (neg == 1 && data->preclen >= data->space)
-			size++;
-		while (i < size)
-		{
-			if (i < data->preclen - ft_longlen(nb))
-				ft_putchar('0');
-			else
-			{
-				if (print == 1)
-				{
-					print = 0;
-					ft_putnbr(nb);
-				}
-				ft_putchar(' ');
-			}
-			i++;
-		}
 		if (print == 1)
 			ft_putnbr(nb);
 	}
-	if (data->precision == 0 && data->fill == 1 && data->space > 0)
+	else if (data->precision == 0 && data->fill == 1 && data->space > 0)
 	{
-		if (neg == 1)
-			ft_putchar('-');
 		if (data->space < data->fillen)
 			size = data->space - ft_longlen(nb) - neg;
 		ft_putnbr(nb);
-		while (i < size)
-		{
+		while (++i < size)
 			ft_putchar(' ');
-			i++;
-		}
 	}
-	//ft_putnbr(nb);
+	else
+	{
+		if ((neg == 1 && data->space > 0 && data->preclen >= data->space)
+		|| (neg == 1 && data->fill == 1 && data->preclen >= data->fillen))
+			size++;
+		while (++i < size)
+		{
+			if (i < data->preclen - ft_longlen(nb))
+				ft_putchar('0');
+			else
+			{
+				if (--print == 0)
+					ft_putnbr(nb);
+				ft_putchar(' ');
+			}
+		}
+		if (print == 1 || (data->fill == 0 && data->precision == 0 && data->space == 0))
+			ft_putnbr(nb);
+	}
+	if (i == -1)
+		i++;
 	data->total += i + ft_longlen(nb);
 }
-
-#include <stdio.h>
 
 void	int_conv(t_flags *data, va_list arg)
 {
@@ -273,33 +124,32 @@ void	int_conv(t_flags *data, va_list arg)
 	long long	nb;
 	int			neg;
 
-	i = 0;
+	i = -1;
 	print = 1;
 	neg = 0;
 	nb = (int)va_arg(arg, int);
-	if (nb < 0)
-	{
+	if (nb < 0 && ++neg && ++data->total)
 		nb = ft_abs(nb);
-		neg = 1;
-		data->total++;
-	}
 	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
 	size = (data->space > size) ? data->space : size;
 	size = size - ft_longlen(nb) - neg;
 	if (data->align == 1)
 		return (advanced_int_conv(data, size, nb, neg));
-	if (data->precision == 1 && data->fill == 0 && data->space > 0)
+	if ((data->precision == 1 && data->fill == 0 && data->space > 0)
+	|| (data->precision == 1 && data->fill == 1 && data->space == 0))
 	{
 		if (nb == 0 && data->preclen == 0)
 		{
 			print = 0;
 			i--;
 		}
-		if (neg == 1 && data->space <= data->preclen)
+		if ((neg == 1 && data->space > 0 && data->space <= data->preclen)
+		|| (neg == 1 && data->fill == 1 && data->preclen >= data->fillen))
 			size++;
-		while (i < size)
+		while (++i < size)
 		{
-			if (i < data->space - data->preclen - neg)
+			if ((data->space > 0 && i < data->space - data->preclen - neg) 
+			|| (data->fill == 1 && i < data->fillen - data->preclen - neg))
 				ft_putchar(' ');
 			else
 			{
@@ -307,66 +157,34 @@ void	int_conv(t_flags *data, va_list arg)
 					ft_putchar('-');
 				ft_putchar('0');
 			}
-			i++;
 		}
 	}
-	if (data->precision == 1 && data->fill == 1 && data->space == 0)
+	if ((data->precision == 0 && data->fill == 1 && data->space == 0)
+	|| (data->precision == 1 && data->fill == 0 && data->space == 0))
 	{
-		if (nb == 0 && data->preclen == 0)
-		{
-			print = 0;
-			i--;
-		}
-		if (neg == 1 && data->preclen >= data->fillen)
-			size++;
-		while (i < size)
-		{
-			if (i < data->fillen - data->preclen - neg)
-				ft_putchar(' ');
-			else
-			{
-				if (--neg == 0)
-					ft_putchar('-');
-				ft_putchar('0');
-			}
-			i++;
-		}
-	}
-	if (data->precision == 0 && data->fill == 1 && data->space == 0)
-	{
-		if (neg-- == 1)
+		if (data->precision == 0 && data->fill == 1 && data->space == 0
+		&& neg-- == 1)
 			ft_putchar('-');
-		while (i < size)
+		if (data->precision == 1 && data->fill == 0 && data->space == 0)
 		{
-			ft_putchar('0');
-			i++;
+			if (data->preclen == 0 && nb == 0)
+				return ;
+			if (neg == 1)
+				size++;
+			if (neg-- == 1)
+				ft_putchar('-');
 		}
-	}
-	if (data->precision == 1 && data->fill == 0 && data->space == 0)
-	{
-		if (data->preclen == 0 && nb == 0)
-			return ;
-		if (neg == 1)
-			size++;
-		if (neg-- == 1)
-			ft_putchar('-');
-		while (i < size)
-		{
+		while (++i < size)
 			ft_putchar('0');
-			i++;
-		}
 	}
 	if (data->precision == 0 && data->fill == 0 && data->space > 0)
-	{
-		while (i < size)
-		{
+		while (++i < size)
 			ft_putchar(' ');
-			i++;
-		}
-	}
 	if (neg == 1)
 		ft_putchar('-');
 	if (print == 1)
 		ft_putnbr(nb);
+	if (i == -1)
+		i++;
 	data->total += i + ft_longlen(nb);
 }
