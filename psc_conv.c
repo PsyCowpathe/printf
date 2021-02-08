@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/07 17:17:55 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/08 17:47:51 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,43 @@ void	char_conv(t_flags *data, va_list arg)
 	data->total += i;
 }
 
-void	string_conv(t_flags *data, va_list arg)
+void	string_conv(t_flags *data, char *str)
 {
 	int		i;
 	int		c;
-	char	*tmp;
-	int		size;
+	int		space;
+	int		slen;
 
 	c = 0;
-	tmp = va_arg(arg, char *);
+	if (str == NULL)
+		return (string_conv(data, "(null)"));
 	i = -1;
-	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
-	size = (data->space > size) ? data->space : size;
+	space = (data->preclen > data->fillen) ? data->preclen : data->fillen;
+	space = (data->space > space) ? data->space : space;
+	slen = (data->precision == 1) ? data->preclen : ft_strlen(str);
+	slen = (data->preclen < 0) ? ft_strlen(str) : slen;
+	if (data->space > 0 && slen > (int)ft_strlen(str))
+		space += slen - ft_strlen(str);
+	space -= slen;
 	if (data->align == 1)
-		ft_putstr(tmp);
-	while (++i < size - (int)ft_strlen(tmp))
+	{
+		while (str[c] && c < slen)
+		{
+			ft_putchar(str[c]);
+			c++;
+		}
+	}
+	while (++i < space)
 		ft_putchar(' ');
 	if (data->align == 0)
-		ft_putstr(tmp);
-	data->total += i + ft_strlen(tmp);
+	{
+		while (str[c] && c < slen)
+		{
+			ft_putchar(str[c]);
+			c++;
+		}
+	}
+	data->total += i + c;
 }
 
 void	address_conv(t_flags *data, va_list arg)

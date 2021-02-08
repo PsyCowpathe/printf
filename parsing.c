@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 17:17:53 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/08 17:47:52 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,16 @@
 
 int		start_conv(t_flags *data, va_list arg)
 {
+	int		save;
+
+	save = data->preclen;
+	data->preclen = ft_abs(data->preclen);
 	//print_struct(*data);
 	if (data->primary == 's')
-		string_conv(data, arg);
+	{
+		data->preclen = save;
+		string_conv(data, va_arg(arg, char *));
+	}
 	else if (data->primary == 'd')
 		int_conv(data, arg);
 	else if (data->primary == 'i')
@@ -32,20 +39,26 @@ int		start_conv(t_flags *data, va_list arg)
 	return (1);
 }
 
-int		get_nb(va_list arg, char *cut, int *i)
+int		get_nb(t_flags *data, va_list arg, char *cut, int *i)
 {
 	int		c;
 	char	*tmp;
 
 	c = *i + 1;
 	if (cut[c] == '*')
-		return(va_arg(arg, int));
+	{
+		c = va_arg(arg, int);
+		if (data->neg == -1 && c < 0)
+			data->neg = 1;
+		return (c);
+	}
 	while (cut[c] && (cut[c] >= '0' && cut[c] <= '9'))
 		c++;
-	if ((tmp = malloc(sizeof(char) * c)) == NULL)
+	if ((tmp = malloc(sizeof(char) * c + 1)) == NULL)
 	{			
 		free(cut);
-		return (-1);
+		data->error = 1;
+		return (0);
 	}
 	c = 0;
 	if (cut[*i] < '0' || cut[*i] > '9')
@@ -74,7 +87,8 @@ int		set_struct(t_flags *data, va_list arg, char *cut)
 	{
 		if (cut[i] >= '1' && cut[i] <= '9')
 		{
-			if ((data->space = get_nb(arg, cut, &i)) == -1)
+			data->space = ft_abs(get_nb(data, arg, cut, &i));
+			if (data->error == 1)
 				return (0);
 		}
 		else if (cut[i] == '-')
@@ -84,16 +98,22 @@ int		set_struct(t_flags *data, va_list arg, char *cut)
 		else if (cut[i] == '0')
 		{
 			data->fill = 1;
-			if ((data->fillen = get_nb(arg, cut, &i)) == -1)
+			data->fillen = ft_abs(get_nb(data, arg, cut, &i));
+			if (data->error == 1)
 				return (0);
+			if (data->fillen < 0)
+				data->align = 1;
+			data->fillen = ft_abs(data->fillen);
 		}
 		else if (cut[i] == '.')
 		{
 			data->precision = 1;
-			if ((data->preclen = get_nb(arg, cut, &i)) == -1)
+			data->neg = -1;
+			data->preclen = get_nb(data, arg, cut, &i);
+			if (data->error == 1)
 				return (0);
 		}
-		else if (cut[i] == '*' && cut[i - 1] != '.' && cut[i - 1] != '0')
+		else if (cut[i] == '*' && (i == 0 || (cut[i - 1] != '.' && cut[i - 1] != '0')))
 		{
 			data->space = va_arg(arg, int);
 			if (data->space < 0)

@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 17:17:54 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/08 17:47:53 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
+# include <limits.h>
 
 typedef struct	s_flags
 {
@@ -35,6 +36,8 @@ typedef struct	s_flags
 	int			preclen;
 	int			space;
 	int			total;
+	int			neg;
+	bool		error;
 }				t_flags;
 
 int		ft_printf(const char *str, ...);
@@ -45,7 +48,7 @@ int		flags_init(char **primary, char *plist, char **secondary, char *slist);
 void	int_conv(t_flags *data, va_list arg);
 void	unsigned_conv(t_flags *data, va_list arg);
 int		verif_flags(t_flags data, char *cut);
-void	string_conv(t_flags *data, va_list arg);
+void	string_conv(t_flags *data, char *str);
 void	address_conv(t_flags *data, va_list arg);
 void	hex_conv(t_flags *data, va_list arg);
 int		ft_long_size_base(uintptr_t nbr, char *base);
