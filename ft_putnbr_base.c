@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 04:58:17 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 08:00:47 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 14:36:55 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,37 @@ void			ft_long_putnbr_base(uintptr_t nbr, char *base)
 	while (base[div])
 		div++;
 	ft_r_putnbr_base(nb, div, base);
+	ft_putchar(base[nb % div]);
+}
+
+static void		ft_rl_putnbr_base(unsigned long long nb, int div, char *base)
+{
+	if (nb >= (unsigned long long)div)
+	{
+		nb = nb / div;
+		ft_rl_putnbr_base(nb, div, base);
+		ft_putchar(base[nb % div]);
+	}
+}
+
+void			ft_llong_putnbr_base(unsigned long long nbr, char *base)
+{
+	int			i;
+	unsigned long long	div;
+	unsigned long long	nb;
+
+	nb = nbr;
+	i = 0;
+	div = 0;
+	if (ft_check(base) == 0)
+		return ;
+	if (nb < 0)
+	{
+		ft_putchar('-');
+		nb *= -1;
+	}
+	while (base[div])
+		div++;
+	ft_rl_putnbr_base(nb, div, base);
 	ft_putchar(base[nb % div]);
 }

@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/08 17:47:53 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 14:36:56 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ typedef struct	s_flags
 	int			total;
 	int			neg;
 	bool		error;
+	bool		noprim;
 }				t_flags;
 
 int		ft_printf(const char *str, ...);
 char	*ft_long_itoa(long long n);
-void	ft_long_putnbr_base(uintptr_t nbr, char *base);
+void			ft_long_putnbr_base(uintptr_t nbr, char *base);
+void	ft_llong_putnbr_base(unsigned long long nbr, char *base);
 int		cut_flags(t_flags data, va_list arg);
 int		flags_init(char **primary, char *plist, char **secondary, char *slist);
 void	int_conv(t_flags *data, va_list arg);

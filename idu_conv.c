@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/07 15:51:55 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 14:36:48 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,9 @@ void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
 		while (++i < size)
 			ft_putchar('0');
 		if (print == 1)
-			ft_putnbr(nb);
+			ft_putnbr(ft_abs(nb));
+		if (nb < 0)
+			data->total--;
 	}
 	else if (data->precision == 0 && data->fill == 1 && data->space > 0)
 	{
@@ -155,7 +157,7 @@ void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
 	{
 		if ((neg == 1 && data->space > 0 && data->preclen >= data->space)
 		|| (neg == 1 && data->fill == 1 && data->preclen >= data->fillen))
-			size++;
+				size++;
 		while (++i < size)
 		{
 			if (i < data->preclen - ft_longlen(nb))
@@ -167,8 +169,8 @@ void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
 				ft_putchar(' ');
 			}
 		}
-		if (print == 1 || (data->fill == 0 && data->precision == 0 && data->space == 0))
-			ft_putnbr(nb);
+		if (print == 1 || (data->fill == 1 && data->precision == 0 && data->space == 0) || (data->fill == 0 && data->precision == 0 && data->space == 0) || ((data->fill == 0 && data->precision == 0 && data->space > 0)))
+			ft_putnbr(ft_abs(nb));
 	}
 	if (i == -1)
 		i++;
@@ -246,4 +248,6 @@ void	int_conv(t_flags *data, va_list arg)
 	if (i == -1)
 		i++;
 	data->total += i + ft_longlen(nb);
+	if (nb == 0 && data->precision == 1 && data->preclen == 0 && data->space == 0 && data->fillen == 0)
+		data->total -= ft_longlen(nb);
 }

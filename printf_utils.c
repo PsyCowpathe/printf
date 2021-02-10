@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:22:06 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 12:37:21 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 14:36:50 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int		print_percent(char *form, int *i)
 		count++;
 		*i += 1;
 	}
-	if (count % 2 == 0)
+	while (count > 1)
 	{
-		while (count > 0)
-		{
-			ft_putchar('%');
-			print++;
-			count -= 2;
-		}
+		ft_putchar('%');
+		print++;
+		count -= 2;
+	}
+	if (count != 1)
+	{
 		while (form[*i] && form[*i] != '%')
 		{
 			ft_putchar(form[*i]);
@@ -41,7 +41,7 @@ int		print_percent(char *form, int *i)
 			*i += 1;
 		}
 	}
-	*i -= 1;
+	//*i -= 1;
 	return (print);
 }
 
@@ -53,9 +53,7 @@ int		verif_flags(t_flags data, char *cut)
 	while (cut[i])
 	{
 		if (ft_ischar(data.primlist, cut[i]) == 1)
-		{
 			return (i);
-		}
 		if (ft_ischar(data.seclist, cut[i]) == 0 && !(cut[i] >= '0' && cut[i] <= '9'))
 			return (-1);
 		i++;

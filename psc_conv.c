@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/08 17:47:51 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 14:36:50 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ void	string_conv(t_flags *data, char *str)
 	space = (data->space > space) ? data->space : space;
 	slen = (data->precision == 1) ? data->preclen : ft_strlen(str);
 	slen = (data->preclen < 0) ? ft_strlen(str) : slen;
-	if (data->space > 0 && slen > (int)ft_strlen(str))
+	if (data->space > 0 && data->space >= data->preclen && slen > (int)ft_strlen(str))
+	{
 		space += slen - ft_strlen(str);
+	}
 	space -= slen;
 	if (data->align == 1)
 	{
@@ -66,8 +68,19 @@ void	string_conv(t_flags *data, char *str)
 			c++;
 		}
 	}
+	if (data->noprim == 1)
+	{
+		if (data->align == 1)
+			ft_putchar('%');
+		data->total++;
+		i++;
+	}
 	while (++i < space)
-		ft_putchar(' ');
+	{
+		ft_putchar((data->fill == 1 ) ? '0' : ' ');
+	}
+	if (data->noprim == 1 && data->align == 0)
+		ft_putchar('%');
 	if (data->align == 0)
 	{
 		while (str[c] && c < slen)
@@ -79,34 +92,51 @@ void	string_conv(t_flags *data, char *str)
 	data->total += i + c;
 }
 
+#include <stdio.h>
+
 void	address_conv(t_flags *data, va_list arg)
 {
 	int			i;
 	int			size;
-	uintptr_t	ptr;
-	uintptr_t	cpy;
+	long long	ptr;
+	long long	cpy;
 
 	i = 0;
-	ptr = va_arg(arg, uintptr_t);
+	ptr = (unsigned long long)va_arg(arg, unsigned long long);
 	cpy = ptr;
 	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
 	size = (data->space > size) ? data->space - 2 : size - 2;
-	data->total += size + 2;
 	if (data->align == 1)
 	{
 		ft_putstr("0x");
-		ft_long_putnbr_base(ptr, "0123456789abcdef");
+		data->total += 2;
+		ft_llong_putnbr_base(ptr, "0123456789abcdef");
+	}
+	if (cpy == LONG_MIN)
+		cpy = LONG_MAX;
+	if (cpy == -1)
+	{
+		data->total += 16;
+		size -= 16;
 	}
 	while (cpy > 0)
 	{
 		cpy /= 16;
 		size--;
+		data->total++;
+	}
+	if (ptr == 0)
+	{
+		size--;
+		data->total++;
 	}
 	while (i++ < size)
 		ft_putchar(' ');
 	if (data->align == 0)
 	{
 		ft_putstr("0x");
-		ft_long_putnbr_base(ptr, "0123456789abcdef");
+		data->total += 2;
+		ft_llong_putnbr_base(ptr, "0123456789abcdef");
 	}
+	data->total += i - 1;
 }
