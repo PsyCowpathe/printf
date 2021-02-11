@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 14:36:58 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 18:01:19 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,31 @@ void	mainprintf(int argc, char **argv)
 	int		ret;
 	int		nb;
 	int		v;
-	int		l = 0;
-	char	*param = "%-1d";
+	int		i = 0;
+	char	param[] = "%8.0i";
 	nb = 1;
 	ret = 0;
 	v = 0;
 	ft_putstr(param);
-	//while (v < 20)
-//	{
 		ft_putchar('\n');
 		ft_putstr("Moi =");
-		ret = ft_printf(param, l);
+		ret = ft_printf(param, i);
+		//ret = ft_printf("%*i", a, i);
+		//ret = ft_printf("%0*i, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		//ret = ft_printf("%-*i, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		//ret = ft_printf("%.*i, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
 		ft_putstr("| retour = ");
 		ft_putnbr(ret);
 		ft_putchar('\n');
 		ft_putstr("Lui =");
-		ret = dprintf(1, param, l);
+		ret = dprintf(1, param, i);
+		//ret = dprintf(1, "%*i", a, i);
+		//ret = dprintf(1, "%0*i, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		//ret = dprintf(1, "%-*i, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		//ret = dprintf(1, "%.*i, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
 		ft_putstr("| retour = ");
 		ft_putnbr(ret);
-		v++;
-	//}
+		ft_putchar('\n');
 }
 
 int		main(int argc, char **argv)

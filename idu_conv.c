@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 14:36:48 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/11 13:07:00 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	unsigned_conv(t_flags *data, va_list arg)
 	free(tmp);
 }
 
-void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
+/*void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
 {
 	int		i;
 	int		print;
@@ -175,9 +175,9 @@ void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
 	if (i == -1)
 		i++;
 	data->total += i + ft_longlen(nb);
-}
+}*/
 
-void	int_conv(t_flags *data, va_list arg)
+/*void	int_conv(t_flags *data, va_list arg)
 {
 	int			i;
 	int			size;
@@ -250,4 +250,52 @@ void	int_conv(t_flags *data, va_list arg)
 	data->total += i + ft_longlen(nb);
 	if (nb == 0 && data->precision == 1 && data->preclen == 0 && data->space == 0 && data->fillen == 0)
 		data->total -= ft_longlen(nb);
+}*/
+
+void	advanced_int_conv(t_flags *data, int size, int nb, int neg)
+
+void	int_conv(t_flags *data, va_list arg)
+{
+	int		i;
+	int		nb;
+	int		size;
+	int		neg;
+	int		space;
+	int		print;
+
+	i = 0;
+	neg = 0;
+	print = 0;
+	nb = (int)va_arg(arg, int);
+	if (nb < 0)
+	{
+		nb = ft_abs(nb);
+		neg = 1;
+	}
+	if (data->align == 1)
+		return (advanced_int_conv(data, nb, neg));
+	size = (data->space > data->fillen) ? data->space : data->fillen;
+	space = size;
+	if (data->preclen >= size)
+		size = data->preclen + neg;
+	if (nb == 0 && data->preclen == 0)
+		i--;
+	while (i < size - ft_longlen(nb) - neg)
+	{
+		if (neg == 1 && i == size - data->preclen - neg)
+		{
+			print = 1;
+			ft_putchar('-');
+		}
+		if (i < size - data->preclen - neg)
+			ft_putchar(' ');
+		else
+			ft_putchar('0');
+				i++;
+	}
+	if (print == 0 && neg == 1)
+		ft_putchar('-');
+	if (!(nb == 0 && data->preclen == 0))
+		ft_putnbr(nb);
+	data->total += size;
 }
