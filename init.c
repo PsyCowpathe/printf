@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 06:32:22 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 14:36:54 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/11 14:54:01 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,5 @@ void	struct_init(t_flags *data)
 	data->fillen = 0;
 	data->preclen = 0;
 	data->space = 0;
-	data->neg = 0;
 	data->error = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 14:36:56 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/11 14:54:02 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ typedef struct	s_flags
 	int			preclen;
 	int			space;
 	int			total;
-	int			neg;
 	bool		error;
 	bool		noprim;
 }				t_flags;

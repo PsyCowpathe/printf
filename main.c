@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 18:01:19 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/11 14:54:04 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,53 @@ void	mainprintf(int argc, char **argv)
 	int		ret;
 	int		nb;
 	int		v;
-	int		i = 0;
-	char	param[] = "%8.0i";
+	int		a = -4;
+	int		i = -9;
+	char	c = 'a';
+	int		j = -12;
+	int		k = 123456789;
+	int		l = 0;
+	int		m = -12345678;
+	int		d = 2147483647;
+	int		e = -2147483648;
+	//char	*n = "abcdefghijklmnop";
+
+
+	char	param[] = "%.*i";
 	nb = 1;
 	ret = 0;
 	v = 0;
 	ft_putstr(param);
+//	while (a < 5)
+//	{
 		ft_putchar('\n');
-		ft_putstr("Moi =");
-		ret = ft_printf(param, i);
-		//ret = ft_printf("%*i", a, i);
-		//ret = ft_printf("%0*i, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		//ret = ft_printf("%-*i, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		//ret = ft_printf("%.*i, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		//ret = ft_printf(param, l);
+		/*ret = ft_printf("%*i", a, i);
+		ft_putchar('\n');
+		ret = dprintf(1, "%*i", a, i);
+		ft_putchar('\n');
+		ft_putchar('\n');
+		ret = ft_printf("%0*i, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		ft_putchar('\n');
+		ret = dprintf(1, "%0*i, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		ft_putchar('\n');
+		ft_putchar('\n');
+		ret = ft_printf("%-*i, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		ft_putchar('\n');
+		ret = dprintf(1, "%-*i, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		ft_putchar('\n');
+		ft_putchar('\n');*/
+		ret = ft_printf("%.*i, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		ft_putchar('\n');
+		ret = dprintf(1, "%.*i, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+		ft_putchar('\n');
+		ft_putchar('\n');
 		ft_putstr("| retour = ");
 		ft_putnbr(ret);
+		//ret = dprintf(1, param, l);
 		ft_putchar('\n');
-		ft_putstr("Lui =");
-		ret = dprintf(1, param, i);
-		//ret = dprintf(1, "%*i", a, i);
-		//ret = dprintf(1, "%0*i, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		//ret = dprintf(1, "%-*i, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		//ret = dprintf(1, "%.*i, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		ft_putstr("| retour = ");
-		ft_putnbr(ret);
-		ft_putchar('\n');
+		//a++;
+//	}
 }
 
 int		main(int argc, char **argv)
