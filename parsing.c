@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 16:28:13 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/11 14:37:57 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,15 @@ int		start_conv(t_flags *data, va_list arg)
 		string_conv(data, va_arg(arg, char *));
 	}
 	else if (data->primary == 'd')
+	{
+		data->preclen = save;
 		int_conv(data, arg);
+	}
 	else if (data->primary == 'i')
+	{
+		data->preclen = save;
 		int_conv(data, arg);
+	}
 	else if (data->primary == 'c')
 		char_conv(data, arg);
 	else if (data->primary == 'u')
@@ -51,12 +57,7 @@ int		get_nb(t_flags *data, va_list arg, char *cut, int *i)
 
 	c = *i + 1;
 	if (cut[c] == '*')
-	{
-		c = va_arg(arg, int);
-		if (data->neg == -1 && c < 0)
-			data->neg = 1;
-		return (c);
-	}
+		return (va_arg(arg, int));
 	while (cut[c] && (cut[c] >= '0' && cut[c] <= '9'))
 		c++;
 	if ((tmp = malloc(sizeof(char) * c + 1)) == NULL)
@@ -113,7 +114,6 @@ int		set_struct(t_flags *data, va_list arg, char *cut)
 		else if (cut[i] == '.')
 		{
 			data->precision = 1;
-			data->neg = -1;
 			data->preclen = get_nb(data, arg, cut, &i);
 			if (data->error == 1)
 				return (0);
