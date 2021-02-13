@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/11 14:54:04 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/13 17:09:18 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,55 +25,51 @@ void	mainprintf(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-	int		ret;
+	int		ret1;
+	int		ret2;
 	int		nb;
 	int		v;
-	int		a = -4;
-	int		i = -9;
-	char	c = 'a';
-	int		j = -12;
-	int		k = 123456789;
+	int		a = 0;
+	int		b = 0;
+//	int		i = -10;
+//	int		c = 97;
+//	int		j = -12;
+//	int		k = 123456789;
 	int		l = 0;
-	int		m = -12345678;
-	int		d = 2147483647;
-	int		e = -2147483648;
+//	int		m = -12345678;
+//	int		d = 2147483647;
+//	int		e = -2147483648;
 	//char	*n = "abcdefghijklmnop";
 
 
-	char	param[] = "%.*i";
+	char	param[] = "%05.0u";
 	nb = 1;
-	ret = 0;
 	v = 0;
 	ft_putstr(param);
 //	while (a < 5)
 //	{
+//		b = -2;
+//		while (b < 5)
+//		{
+		ft_putstr(" | with a = ");
+		ft_putnbr(a);
+		ft_putstr(" b = ");
+		ft_putnbr(b);
 		ft_putchar('\n');
-		//ret = ft_printf(param, l);
-		/*ret = ft_printf("%*i", a, i);
-		ft_putchar('\n');
-		ret = dprintf(1, "%*i", a, i);
-		ft_putchar('\n');
-		ft_putchar('\n');
-		ret = ft_printf("%0*i, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		ft_putchar('\n');
-		ret = dprintf(1, "%0*i, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d, %0*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		ft_putchar('\n');
-		ft_putchar('\n');
-		ret = ft_printf("%-*i, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		ft_putchar('\n');
-		ret = dprintf(1, "%-*i, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d, %-*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		ft_putchar('\n');
-		ft_putchar('\n');*/
-		ret = ft_printf("%.*i, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		ft_putchar('\n');
-		ret = dprintf(1, "%.*i, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d, %.*d", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-		ft_putchar('\n');
-		ft_putchar('\n');
+		ret1 = ft_printf(param, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l);
 		ft_putstr("| retour = ");
-		ft_putnbr(ret);
+		ft_putnbr(ret1);
+		ft_putchar('\n');
+		ret2 = dprintf(1, param, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l);
+		ft_putstr("| retour = ");
+		ft_putnbr(ret2);
+		//if (ret1 != ret2)
+		//	ft_putstr("***************error*************************");
 		//ret = dprintf(1, param, l);
 		ft_putchar('\n');
-		//a++;
+//		b++;
+//		}
+//		a++;
 //	}
 }
 

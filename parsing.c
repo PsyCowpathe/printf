@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/11 14:54:03 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/13 17:09:17 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,17 @@ int		start_conv(t_flags *data, va_list arg)
 	else if (data->primary == 'c')
 		char_conv(data, arg);
 	else if (data->primary == 'u')
+	{
+		data->preclen = save;
 		unsigned_conv(data, arg);
+	}
 	else if (data->primary == 'p')
 		address_conv(data, arg);
 	else if (data->primary == 'x' || data->primary == 'X')
+	{
+		data->preclen = save;
 		hex_conv(data, arg);
+	}
 	return (1);
 }
 

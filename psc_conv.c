@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/11 14:54:01 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/13 17:09:18 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,39 @@ void	char_conv(t_flags *data, va_list arg)
 
 void	string_conv(t_flags *data, char *str)
 {
+	int		word;
+	int		space;
+	int		i;
+	int		c;
+
+	if (str == NULL)
+		return (string_conv(data, "(null)"));
+	space = (data->fillen > data->space) ? data->fillen : data->space;
+	word = ft_strlen(str);
+	i = 0;
+	c = 0;
+	if (data->precision == 1 && data->preclen >= 0 && data->preclen < word)
+		word = data->preclen;
+	space = space - word;
+	while (data->align == 1 && c < word)
+	{
+		ft_putchar(str[c++]);
+	}
+	while (i < space)
+	{
+		ft_putchar(' ');
+		i++;
+	}
+	while (data->align == 0 && c < word)
+	{
+		ft_putchar(str[c++]);
+	}
+	data->total += i + c;
+}
+
+
+/*void	string_conv(t_flags *data, char *str)
+{
 	int		i;
 	int		c;
 	int		space;
@@ -51,8 +84,8 @@ void	string_conv(t_flags *data, char *str)
 	if (str == NULL)
 		return (string_conv(data, "(null)"));
 	i = -1;
-	space = (data->preclen > data->fillen) ? data->preclen : data->fillen;
-	space = (data->space > space) ? data->space : space;
+	space = (data->space > data->fillen) ? data->space : data->fillen;
+	//space = (data->space > space) ? data->space : space;
 	slen = (data->precision == 1) ? data->preclen : ft_strlen(str);
 	slen = (data->preclen < 0) ? ft_strlen(str) : slen;
 	if (data->space > 0 && data->space >= data->preclen && slen > (int)ft_strlen(str))
@@ -75,7 +108,7 @@ void	string_conv(t_flags *data, char *str)
 		data->total++;
 		i++;
 	}
-	while (++i < space)
+	while (++i < data->space - (int)ft_strlen(str))
 	{
 		ft_putchar((data->fill == 1 ) ? '0' : ' ');
 	}
@@ -90,7 +123,7 @@ void	string_conv(t_flags *data, char *str)
 		}
 	}
 	data->total += i + c;
-}
+}*/
 
 #include <stdio.h>
 

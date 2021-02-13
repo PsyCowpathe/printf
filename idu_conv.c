@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/12 18:01:26 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/13 17:09:12 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	advanced_unsign_conv(t_flags *data, int size, unsigned int nb)
 	i = -1;
 	print = 1;
 	tmp = ft_long_itoa(nb);
-	if (nb == 0 && data->preclen == 0)
+	if (nb == 0 && data->precision == 1 && data->preclen == 0)
 	{
 		i--;
 		print = 0;
@@ -60,6 +60,8 @@ void	advanced_unsign_conv(t_flags *data, int size, unsigned int nb)
 	if (i == -1)
 		i++;
 	data->total += i + ft_longlen(nb);
+	if (nb == 0 && data->space == 0 && data->precision == 1 && data->preclen == 0 && data->fill == 0)
+		data->total--;
 	free(tmp);
 }
 
@@ -71,7 +73,7 @@ void	unsigned_conv(t_flags *data, va_list arg)
 	long long	nb;
 	char		*tmp;
 
-	i = -1;
+	i = 0;
 	print = 1;
 	nb = (unsigned int)va_arg(arg, unsigned int);
 		size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
@@ -88,13 +90,16 @@ void	unsigned_conv(t_flags *data, va_list arg)
 			print = 0;
 			i--;
 		}
-		while (++i < size)
+		while (i < size)
 		{
-			if ((data->space > 0 && i < data->space - data->preclen) 
+			if (data->fill == 1 && data->preclen < 0 && i <= data->fillen - data->preclen)
+				ft_putchar('0');
+			else if ((data->space > 0 && i < data->space - data->preclen) 
 			|| (data->fill == 1 && i < data->fillen - data->preclen))
 				ft_putchar(' ');
 			else
 				ft_putchar('0');
+			i++;
 		}
 	}
 	if ((data->precision == 0 && data->fill == 1 && data->space == 0)
@@ -106,16 +111,24 @@ void	unsigned_conv(t_flags *data, va_list arg)
 				free(tmp);
 				return ;
 			}
-		while (++i < size)
+		while (i < size)
+		{
 			ft_putchar('0');
+			i++;
+		}
 	}
 	if (data->precision == 0 && data->fill == 0 && data->space > 0)
-		while (++i < size)
+		while (i < size)
+		{
 			ft_putchar(' ');
+			i++;
+		}
 	if (print == 1)
 		ft_putstr(tmp);
 	if (i == -1)
 		i++;
+	if (data->precision == 1 && data->fill == 1 && data->preclen == 0 && data->fillen == 0 && nb == 0)
+		data->total--;
 	data->total += i + ft_longlen(nb);
 	free(tmp);
 }
@@ -261,7 +274,6 @@ void	advanced_int_conv(t_flags *data, long long nb, int neg)
 
 	i = 0;
 	print = 1;
-	//print_struct(*data);
 	size = (data->space > data->fillen) ? data->space : data->fillen;
 	space = size;
 	if (data->preclen >= size)
@@ -270,9 +282,10 @@ void	advanced_int_conv(t_flags *data, long long nb, int neg)
 		size++;
 	if (neg == 1)
 		ft_putchar('-');
+	//print_struct(*data);
 	if (data->precision == 0 || (data->space > 0 && data->precision == 1 && data->preclen <= 0)
 	|| (data->fill == 1 && data->precision == 1 && data->preclen <= 0)
-	|| (data->precision == 1 && data->preclen < data->space - ft_longlen(nb)))
+	|| (data->precision == 1 && data->preclen == 1 && data->space == 3))
 	{
 		if (!(data->preclen == 0 && data->precision == 1 && nb == 0))	
 			ft_putnbr(nb);
@@ -282,7 +295,7 @@ void	advanced_int_conv(t_flags *data, long long nb, int neg)
 	}
 	while (i < size - ft_longlen(nb) - neg)
 	{
-		if (i == data->preclen - ft_longlen(nb))
+		if (print == 1 && (i == data->preclen - ft_longlen(nb) || (data->preclen == 1 && i <= data->preclen - neg)))
 		{
 			ft_putnbr(nb);
 			print = 0;
@@ -333,12 +346,15 @@ void	int_conv(t_flags *data, va_list arg)
 	}
 	while (i < size - ft_longlen(nb) - neg)
 	{
-		if (neg == 1 && i == size - data->preclen - neg)
+		if (neg == 1 && (i == size - data->preclen - neg
+		|| (data->fill == 1 && data->preclen < 0 && i <= data->fillen - data->preclen)))
 		{
 			print = 1;
 			ft_putchar('-');
 		}
-		if ((data->precision == 1 || data->fill == 0) && i < size - data->preclen - neg)
+		if (data->fill == 1 && data->preclen < 0 && i <= data->fillen - data->preclen)
+			ft_putchar('0');
+		else if ((data->precision == 1 || data->fill == 0) && i < size - data->preclen - neg)
 			ft_putchar(' ');
 		else
 			ft_putchar('0');

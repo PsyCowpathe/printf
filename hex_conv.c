@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 14:36:57 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/13 17:09:13 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,16 @@ void	hex_conv(t_flags *data, va_list arg)
 		return (advanced_hex_conv(data, size, nb));
 	while (i < size)
 	{
-		if ((data->precision == 1 && i < data->fillen - data->preclen)
+		if (data->fill == 1 && data->preclen < 0 && i <= data->fillen - data->preclen)
+			ft_putchar('0');
+		else if ((data->precision == 1 && i < data->fillen - data->preclen)
 		|| i < data->space - data->preclen)
 			ft_putchar(' ');
 		else
 			ft_putchar('0');
 		i++;
 	}
-	data->total += i + hex_size(nb);	
+	data->total += i + hex_size(nb);
 	if (!(nb == 0 && data->precision == 1 && data->preclen == 0))
 		print_hex(nb, data->primary);
 }
