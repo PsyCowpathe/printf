@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 14:36:54 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/16 16:54:36 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ int		ft_printf(const char *str, ...)
 	ret = cut_flags(data, arg);
 	free(data.primlist);
 	free(data.seclist);
+	va_end(arg);
 	return (ret);
 }

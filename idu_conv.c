@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/15 18:08:44 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/16 16:54:36 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,30 +175,38 @@ void	fill_prec(t_flags *data, long long nb, int neg)
 	int		space;
 	int		zero;
 	int		ret;
+	int		print;
 
-	if (data->fillen > data->preclen)
+	print = 0;
+	if (nb == 0 && data->precision == 1 && data->preclen == 0)
+		print = 1;
+	if (data->fillen > data->preclen && data->preclen >= 0)
 	{
 		if (data->preclen > ft_longlen(nb))
 			space = data->fillen - data->preclen - neg;
 		else
 			space = data->fillen - ft_longlen(nb) - neg;
-		ret = print_char(space, ' ') + ft_longlen(nb) + neg;
+		ret = print_char(space + print, ' ') + ft_longlen(nb) + neg;
 		zero = ret;
 		if (neg == 1)
 			ft_putchar('-');
 		ret += print_char(data->fillen - zero, '0');
-		ft_putnbr(nb);
+		if (print == 0)
+			ft_putnbr(nb);
 	}
 	else
 	{
 		zero = data->preclen - ft_longlen(nb);
+		if (data->preclen < 0)
+			zero = data->fillen - ft_longlen(nb) - neg;
 		if (neg == 1)
 			ft_putchar('-');
-		ret = print_char(zero, '0');
+		ret = print_char(zero + print, '0');
 		ret += neg + ft_longlen(nb);
-		ft_putnbr(nb);
+		if (print == 0)
+			ft_putnbr(nb);
 	}
-	data->total += ret;
+	data->total += ret - print;
 }
 
 void	space_prec(t_flags *data, long long nb, int neg)
@@ -206,30 +214,36 @@ void	space_prec(t_flags *data, long long nb, int neg)
 	int		space;
 	int		zero;
 	int		ret;
+	int		print;
 
+	print = 0;
+	if (nb == 0 && data->precision == 1 && data->preclen == 0)
+		print = 1;
 	if (data->space > data->preclen)
 	{
 		if (data->preclen > ft_longlen(nb))
 			space = data->space - data->preclen - neg;
 		else
 			space = data->space - ft_longlen(nb) - neg;
-		ret = print_char(space, ' ') + ft_longlen(nb) + neg;
+		ret = print_char(space + print, ' ') + ft_longlen(nb) + neg;
 		zero = ret;
 		if (neg == 1)
 			ft_putchar('-');
 		ret += print_char(data->space - zero, '0');
-		ft_putnbr(nb);
+		if (print == 0)
+			ft_putnbr(nb);
 	}
 	else
 	{
 		zero = data->preclen - ft_longlen(nb);
 		if (neg == 1)
 			ft_putchar('-');
-		ret = print_char(zero, '0');
+		ret = print_char(zero + print, '0');
 		ret += neg + ft_longlen(nb);
-		ft_putnbr(nb);
+		if (print == 0)
+			ft_putnbr(nb);
 	}
-	data->total += ret;
+	data->total += ret - print;
 }
 
 void	advanced_no_prec(t_flags *data, long long nb, int neg)
@@ -240,7 +254,10 @@ void	advanced_no_prec(t_flags *data, long long nb, int neg)
 	if (neg == 1)
 		ft_putchar('-');
 	ft_putnbr(nb);
-	space = data->fillen - neg - ft_longlen(nb);
+	space = data->fillen;
+	if (space < data->space)
+		space = data->space;
+	space = space - neg - ft_longlen(nb);
 	ret = print_char(space, ' ');
 	data->total += ret + neg + ft_longlen(nb);
 }
@@ -249,27 +266,31 @@ void	advanced_fill_prec(t_flags *data, long long nb, int neg)
 {
 	int		ret;
 	int		zero;
+	int		print;
 
-	ret = 0;
-	zero = 0;
+	print = 0;
+	if (nb == 0 && data->precision == 1 && data->preclen == 0)
+		print = 1;
 	if (data->fillen > data->preclen)
 	{
 		if (neg == 1)
 			ft_putchar('-');
 		zero = data->preclen - ft_longlen(nb);
 		ret = print_char(zero, '0');
-		ft_putnbr(nb);
-		ret += print_char(data->fillen - ft_longlen(nb) - neg - ret, ' ');
+		if (print == 0)
+			ft_putnbr(nb);
+		ret += print_char(data->fillen - ft_longlen(nb) - neg - ret + print, ' ');
 	}
 	else
 	{
 		if (neg == 1)
 			ft_putchar('-');
 		zero = data->preclen - ft_longlen(nb);
-		ret = print_char(zero, '0');
-		ft_putnbr(nb);
+		ret = print_char(zero + print, '0');
+		if (print == 0)
+			ft_putnbr(nb);
 	}
-	data->total += ret + ft_longlen(nb) + neg;;
+	data->total += ret + ft_longlen(nb) + neg - print;
 }
 
 void	advanded_space_prec(t_flags *data, long long nb, int neg)
@@ -277,7 +298,11 @@ void	advanded_space_prec(t_flags *data, long long nb, int neg)
 	int		space;
 	int		zero;
 	int		ret;
+	int		print;
 
+	print = 0;
+	if (nb == 0 && data->precision == 1 && data->preclen == 0)
+		print = 1;
 	if (data->space > data->preclen)
 	{
 		if (neg == 1)
@@ -287,21 +312,71 @@ void	advanded_space_prec(t_flags *data, long long nb, int neg)
 		else
 			zero = 0;
 		ret = print_char(zero, '0') + ft_longlen(nb) + neg;
-		ft_putnbr(nb);
+		if (print == 0)
+			ft_putnbr(nb);
 		space = ret;
-		ret += print_char(data->space - space, ' ');
+		ret += print_char(data->space - space + print, ' ');
 	}
 	else
 	{
 		zero = data->preclen - ft_longlen(nb);
 		if (neg == 1)
 			ft_putchar('-');
-		ret = print_char(zero, '0');
+		ret = print_char(zero + print, '0');
 		ret += neg + ft_longlen(nb);
+		if (print == 0)
+			ft_putnbr(nb);
+	}
+	data->total += ret - print;
+
+}
+
+void	all_flag(t_flags *data, long long nb, int neg)
+{
+	int		space;
+	int		ret;
+
+	ret = 0;
+	space = data->fillen;
+	if (space < data->space)
+		space = data->space;
+	if (space < data->preclen)
+		space = data->preclen;
+	if (data->preclen >= space)
+	{
+		space = space - ft_longlen(nb);
+		if (neg == 1)
+			ft_putchar('-');
+		ret = print_char(space, '0');
 		ft_putnbr(nb);
 	}
-	data->total += ret;
+	else
+	{
+		space = space - ft_longlen(nb) - neg;
+		if (neg == 1)
+			ft_putchar('-');
+		ft_putnbr(nb);
+		ret = print_char(space, ' ');
+	}
+	data->total += ret + ft_longlen(nb) + neg;
+}
 
+void	with_prec(t_flags *data, long long nb, int neg)
+{
+	int		space;
+	int		ret;
+	int		print;
+
+	print = 0;
+	if (nb == 0 && data->precision && data->preclen == 0)
+		print = 1;
+	space = data->preclen - ft_longlen(nb);
+	if (neg == 1)
+		ft_putchar('-');
+	ret = print_char(space + print, '0');
+	if (print == 0)
+		ft_putnbr(nb);
+	data->total += ret + ft_longlen(nb) + neg - print;
 }
 
 void	advanced_int_conv(t_flags *data, long long nb, int neg)
@@ -312,6 +387,10 @@ void	advanced_int_conv(t_flags *data, long long nb, int neg)
 	  advanced_fill_prec(data, nb, neg);
 	else if (data->precision == 1 && data->space > 0 && data->fill == 0)
 	  advanded_space_prec(data, nb, neg);
+	else if (data->precision == 1 && data->space > 0 && data->fill == 1)
+		all_flag(data, nb, neg);
+	else
+		with_prec(data, nb, neg);
 }
 
 void	int_conv(t_flags *data, va_list arg)
@@ -334,106 +413,6 @@ void	int_conv(t_flags *data, va_list arg)
 		fill_prec(data, nb, neg);
 	else if (data->precision == 1 && data->space > 0 && data->fill == 0)
 		space_prec(data, nb, neg);
-}
-
-/*void	advanced_int_conv(t_flags *data, long long nb, int neg)
-  {
-  int		i;
-  int		space;
-  int		size;
-  int		print;
-
-  i = 0;
-  print = 1;
-  size = (data->space > data->fillen) ? data->space : data->fillen;
-  space = size;
-  if (data->preclen >= size)
-  size = data->preclen + neg;
-  if (nb == 0 && data->precision == 1 && data->preclen == 0)
-  size++;
-  if (neg == 1)
-  ft_putchar('-');
-//print_struct(*data);
-if (data->precision == 0 || (data->space > 0 && data->precision == 1 && data->preclen <= 0)
-|| (data->fill == 1 && data->precision == 1 && data->preclen <= 0)
-|| (data->precision == 1 && data->preclen == 1 && data->space == 3))
-{
-if (!(data->preclen == 0 && data->precision == 1 && nb == 0))	
-ft_putnbr(nb);
-else
-data->total--;
-print = 0;
-}
-while (i < size - ft_longlen(nb) - neg)
-{
-if (print == 1 && (i == data->preclen - ft_longlen(nb) || (data->preclen == 1 && i <= data->preclen - neg)))
-{
-ft_putnbr(nb);
-print = 0;
-}
-if (i < data->preclen - ft_longlen(nb))
-ft_putchar('0');
-else
-ft_putchar(' ');
-i++;
-}
-if (print == 1 && !(nb == 0 && data->precision == 1 && data->preclen == 0))
-ft_putnbr(nb);
-else if (print == 1)
-data->total--;
-data->total += i + neg + ft_longlen(nb);
-}
-
-void	int_conv(t_flags *data, va_list arg)
-{
-int			i;
-long long	nb;
-int			size;
-int			neg;
-int			space;
-int			print;
-
-i = 0;
-neg = 0;
-print = 0;
-nb = (int)va_arg(arg, int);
-if (nb < 0)
-{
-nb = ft_abs(nb);
-neg = 1;
-}
-if (data->align == 1)
-return (advanced_int_conv(data, nb, neg));
-size = (data->space > data->fillen) ? data->space : data->fillen;
-space = size;
-if (data->preclen >= size)
-size = data->preclen + neg;
-if (nb == 0 && data->precision == 1 && data->preclen == 0)
-	i--;
-if (data->precision == 0 && data->space == 0 && neg == 1)
-{
-	ft_putchar('-');
-	print = 1;
-}
-while (i < size - ft_longlen(nb) - neg)
-{
-	if (neg == 1 && (i == size - data->preclen - neg
-				|| (data->fill == 1 && data->preclen < 0 && i <= data->fillen - data->preclen)))
-	{
-		print = 1;
-		ft_putchar('-');
-	}
-	if (data->fill == 1 && data->preclen < 0 && i <= data->fillen - data->preclen)
-		ft_putchar('0');
-	else if ((data->precision == 1 || data->fill == 0) && i < size - data->preclen - neg)
-		ft_putchar(' ');
 	else
-		ft_putchar('0');
-	i++;
+		with_prec(data, nb, neg);
 }
-if (print == 0 && neg == 1)
-	ft_putchar('-');
-if (!(nb == 0 && data->precision == 1 && data->preclen == 0))
-	ft_putnbr(nb);
-	data->total += i + neg + ft_longlen(nb);
-	}*/
