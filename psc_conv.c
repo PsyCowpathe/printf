@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/13 17:09:18 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/17 18:02:06 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,33 @@ void	string_conv(t_flags *data, char *str)
 	if (data->precision == 1 && data->preclen >= 0 && data->preclen < word)
 		word = data->preclen;
 	space = space - word;
+	if (data->noprim == 1 && data->align == 1)
+	{
+		data->total++;
+		ft_putchar('%');
+	}
 	while (data->align == 1 && c < word)
 	{
 		ft_putchar(str[c++]);
 	}
-	while (i < space)
+	while (i + data->noprim < space)
 	{
-		ft_putchar(' ');
+		if (data->fill == 1)
+			ft_putchar('0');
+		else
+			ft_putchar(' ');
 		i++;
+	}
+	if (data->noprim == 1 && data->align == 0)
+	{
+		data->total++;
+		ft_putchar('%');
 	}
 	while (data->align == 0 && c < word)
 	{
 		ft_putchar(str[c++]);
 	}
-	data->total += i + c;
+	data->total += i + c + data->noprim;
 }
 
 

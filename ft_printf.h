@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/12 18:01:32 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/17 18:02:09 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct	s_flags
 	int			total;
 	bool		error;
 	bool		noprim;
+	int			nbsize;
 }				t_flags;
 
 int		ft_printf(const char *str, ...);
@@ -54,8 +55,11 @@ void	address_conv(t_flags *data, va_list arg);
 void	hex_conv(t_flags *data, va_list arg);
 int		ft_long_size_base(uintptr_t nbr, char *base);
 void	char_conv(t_flags *data, va_list arg);
-int		print_percent(char *form, int *i);
 void	struct_init(t_flags *data);
+int		print_char(int len, char c);
+void	advanced_int_conv(t_flags *data, long long nb, int neg);
+void	with_prec(t_flags *data, long long nb, int neg);
+int		preclen_is_upper(t_flags *data, long long nb, int neg, int wich);
 
 void	print_struct(t_flags data);
 

@@ -6,13 +6,14 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/13 17:09:18 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/17 18:02:10 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdio.h>
 #include <limits.h>
+
 
 /*
    printf("percent 1 %012%");
@@ -29,20 +30,19 @@ void	mainprintf(int argc, char **argv)
 	int		ret2;
 	int		nb;
 	int		v;
-	int		a = 0;
-	int		b = 0;
+	int		a = 18;
+	int		b = 12;
 //	int		i = -10;
 //	int		c = 97;
 //	int		j = -12;
 //	int		k = 123456789;
-	int		l = 0;
+//	int		l = 8;
 //	int		m = -12345678;
 //	int		d = 2147483647;
 //	int		e = -2147483648;
 	//char	*n = "abcdefghijklmnop";
 
-
-	char	param[] = "%05.0u";
+	char	param[] = "percent 3 %-12%";
 	nb = 1;
 	v = 0;
 	ft_putstr(param);
@@ -56,11 +56,11 @@ void	mainprintf(int argc, char **argv)
 		ft_putstr(" b = ");
 		ft_putnbr(b);
 		ft_putchar('\n');
-		ret1 = ft_printf(param, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l);
+		ret1 = ft_printf(param, 5, 0, 4, -102);
 		ft_putstr("| retour = ");
 		ft_putnbr(ret1);
 		ft_putchar('\n');
-		ret2 = dprintf(1, param, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l, a, b, l);
+		ret2 = dprintf(1, param, 5, 0, 4, -102);
 		ft_putstr("| retour = ");
 		ft_putnbr(ret2);
 		//if (ret1 != ret2)

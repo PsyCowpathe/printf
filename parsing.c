@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/13 17:09:17 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/17 18:02:10 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,30 @@
 
 int		start_conv(t_flags *data, va_list arg)
 {
-	int		save;
-
-	save = data->preclen;
-	data->preclen = ft_abs(data->preclen);
-	//print_struct(*data);
 	if (data->noprim == 1)
-	{
 		string_conv(data, "");
-		//data->noprim = 0;
-	}
 	if (data->primary == 's')
 	{
-		data->preclen = save;
 		string_conv(data, va_arg(arg, char *));
 	}
 	else if (data->primary == 'd')
 	{
-		data->preclen = save;
 		int_conv(data, arg);
 	}
 	else if (data->primary == 'i')
 	{
-		data->preclen = save;
 		int_conv(data, arg);
 	}
 	else if (data->primary == 'c')
 		char_conv(data, arg);
 	else if (data->primary == 'u')
 	{
-		data->preclen = save;
 		unsigned_conv(data, arg);
 	}
 	else if (data->primary == 'p')
 		address_conv(data, arg);
 	else if (data->primary == 'x' || data->primary == 'X')
 	{
-		data->preclen = save;
 		hex_conv(data, arg);
 	}
 	return (1);
@@ -149,7 +136,7 @@ char	*get_flags(t_flags *data, char *form, int *i)
 	int		primary;
 
 	size = 0;
-	primary = 1;
+	primary = 0;
 	while (form[*i + size] && form[*i + size] != '%')
 		size++;
 	cut = malloc(sizeof(char) * size + 1);
@@ -157,12 +144,12 @@ char	*get_flags(t_flags *data, char *form, int *i)
 	while (form[*i] && form[*i] != '%')
 	{
 		if (ft_ischar(data->primlist, form[*i]) == 1)
-			primary = 0;
+			primary = 1;
 		cut[size] = form[*i];
 		*i += 1;
 		size++;
 	}
-	if (primary == 1 && size != 0)
+	if (primary == 0 && size != 0)
 		data->noprim = 1;
 	cut[size] = '\0';
 	return (cut);
