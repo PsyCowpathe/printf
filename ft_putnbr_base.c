@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 04:58:17 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/10 14:36:55 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 16:18:16 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void		ft_rl_putnbr_base(unsigned long long nb, int div, char *base)
 
 void			ft_llong_putnbr_base(unsigned long long nbr, char *base)
 {
-	int			i;
+	int					i;
 	unsigned long long	div;
 	unsigned long long	nb;
 

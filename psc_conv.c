@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   psc_conv.c                                           :+:      :+:    :+:   */
+/*   psc_conv.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/17 18:02:06 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 16:18:17 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	char_conv(t_flags *data, va_list arg)
+void		char_conv(t_flags *data, va_list arg)
 {
 	int		size;
 	int		i;
@@ -40,7 +40,27 @@ void	char_conv(t_flags *data, va_list arg)
 	data->total += i;
 }
 
-void	string_conv(t_flags *data, char *str)
+int			pre_string(t_flags *data, char *str, int *word, int *space)
+{
+	int		c;
+
+	c = 0;
+	*space = (data->fillen > data->space) ? data->fillen : data->space;
+	*word = ft_strlen(str);
+	if (data->precision == 1 && data->preclen >= 0 && data->preclen < *word)
+		*word = data->preclen;
+	*space = *space - *word;
+	if (data->noprim == 1 && data->align == 1)
+	{
+		data->total++;
+		ft_putchar('%');
+	}
+	while (data->align == 1 && c < *word)
+		ft_putchar(str[c++]);
+	return (c);
+}
+
+void		string_conv(t_flags *data, char *str)
 {
 	int		word;
 	int		space;
@@ -49,22 +69,8 @@ void	string_conv(t_flags *data, char *str)
 
 	if (str == NULL)
 		return (string_conv(data, "(null)"));
-	space = (data->fillen > data->space) ? data->fillen : data->space;
-	word = ft_strlen(str);
 	i = 0;
-	c = 0;
-	if (data->precision == 1 && data->preclen >= 0 && data->preclen < word)
-		word = data->preclen;
-	space = space - word;
-	if (data->noprim == 1 && data->align == 1)
-	{
-		data->total++;
-		ft_putchar('%');
-	}
-	while (data->align == 1 && c < word)
-	{
-		ft_putchar(str[c++]);
-	}
+	c = pre_string(data, str, &word, &space);
 	while (i + data->noprim < space)
 	{
 		if (data->fill == 1)
@@ -79,68 +85,40 @@ void	string_conv(t_flags *data, char *str)
 		ft_putchar('%');
 	}
 	while (data->align == 0 && c < word)
-	{
 		ft_putchar(str[c++]);
-	}
 	data->total += i + c + data->noprim;
 }
 
-
-/*void	string_conv(t_flags *data, char *str)
+long long	pre_address(t_flags *data, va_list arg, int *size, long long *cpy)
 {
-	int		i;
-	int		c;
-	int		space;
-	int		slen;
+	long long	ptr;
 
-	c = 0;
-	if (str == NULL)
-		return (string_conv(data, "(null)"));
-	i = -1;
-	space = (data->space > data->fillen) ? data->space : data->fillen;
-	//space = (data->space > space) ? data->space : space;
-	slen = (data->precision == 1) ? data->preclen : ft_strlen(str);
-	slen = (data->preclen < 0) ? ft_strlen(str) : slen;
-	if (data->space > 0 && data->space >= data->preclen && slen > (int)ft_strlen(str))
-	{
-		space += slen - ft_strlen(str);
-	}
-	space -= slen;
+	ptr = (unsigned long long)va_arg(arg, unsigned long long);
+	*cpy = ptr;
+	*size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
+	*size = (data->space > *size) ? data->space - 2 : *size - 2;
 	if (data->align == 1)
 	{
-		while (str[c] && c < slen)
-		{
-			ft_putchar(str[c]);
-			c++;
-		}
+		ft_putstr("0x");
+		data->total += 2;
+		ft_llong_putnbr_base(ptr, "0123456789abcdef");
 	}
-	if (data->noprim == 1)
+	if (*cpy == LONG_MIN)
+		*cpy = LONG_MAX;
+	if (*cpy == -1)
 	{
-		if (data->align == 1)
-			ft_putchar('%');
+		data->total += 16;
+		*size -= 16;
+	}
+	if (ptr == 0)
+	{
+		*size -= 1;
 		data->total++;
-		i++;
 	}
-	while (++i < data->space - (int)ft_strlen(str))
-	{
-		ft_putchar((data->fill == 1 ) ? '0' : ' ');
-	}
-	if (data->noprim == 1 && data->align == 0)
-		ft_putchar('%');
-	if (data->align == 0)
-	{
-		while (str[c] && c < slen)
-		{
-			ft_putchar(str[c]);
-			c++;
-		}
-	}
-	data->total += i + c;
-}*/
+	return (ptr);
+}
 
-#include <stdio.h>
-
-void	address_conv(t_flags *data, va_list arg)
+void		address_conv(t_flags *data, va_list arg)
 {
 	int			i;
 	int			size;
@@ -148,31 +126,10 @@ void	address_conv(t_flags *data, va_list arg)
 	long long	cpy;
 
 	i = 0;
-	ptr = (unsigned long long)va_arg(arg, unsigned long long);
-	cpy = ptr;
-	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
-	size = (data->space > size) ? data->space - 2 : size - 2;
-	if (data->align == 1)
-	{
-		ft_putstr("0x");
-		data->total += 2;
-		ft_llong_putnbr_base(ptr, "0123456789abcdef");
-	}
-	if (cpy == LONG_MIN)
-		cpy = LONG_MAX;
-	if (cpy == -1)
-	{
-		data->total += 16;
-		size -= 16;
-	}
+	ptr = pre_address(data, arg, &size, &cpy);
 	while (cpy > 0)
 	{
 		cpy /= 16;
-		size--;
-		data->total++;
-	}
-	if (ptr == 0)
-	{
 		size--;
 		data->total++;
 	}

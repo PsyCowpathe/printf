@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/17 18:02:10 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 17:48:27 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	mainprintf(int argc, char **argv)
 	int		ret2;
 	int		nb;
 	int		v;
-	int		a = 18;
-	int		b = 12;
+	int		a = 3;
+	int		b = 4;
+	int		c = 8;
 //	int		i = -10;
 //	int		c = 97;
 //	int		j = -12;
@@ -42,7 +43,7 @@ void	mainprintf(int argc, char **argv)
 //	int		e = -2147483648;
 	//char	*n = "abcdefghijklmnop";
 
-	char	param[] = "percent 3 %-12%";
+	char	param[] = "%-*.*u";
 	nb = 1;
 	v = 0;
 	ft_putstr(param);
@@ -56,11 +57,11 @@ void	mainprintf(int argc, char **argv)
 		ft_putstr(" b = ");
 		ft_putnbr(b);
 		ft_putchar('\n');
-		ret1 = ft_printf(param, 5, 0, 4, -102);
+		ret1 = ft_printf(param, a, b, c);
 		ft_putstr("| retour = ");
 		ft_putnbr(ret1);
 		ft_putchar('\n');
-		ret2 = dprintf(1, param, 5, 0, 4, -102);
+		ret2 = dprintf(1, param, a, b, c);
 		ft_putstr("| retour = ");
 		ft_putnbr(ret2);
 		//if (ret1 != ret2)

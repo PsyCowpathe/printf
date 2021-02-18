@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:22:06 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/17 18:02:08 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 17:48:20 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,17 @@ int		preclen_is_upper(t_flags *data, long long nb, int neg, int wich)
 	int		print;
 	int		ret;
 	int		zero;
+	int		nblen;
 
+	nblen = ft_longlen(nb);
 	print = (nb == 0 && data->precision == 1 && data->preclen == 0) ? 1 : 0;
-	zero = data->preclen - ft_longlen(nb);
+	zero = data->preclen - nblen;
 	if (wich == 1 && data->preclen < 0)
-		zero = data->fillen - ft_longlen(nb) - neg;
+		zero = data->fillen - nblen - neg;
 	if (neg == 1)
 		ft_putchar('-');
 	ret = print_char(zero + print, '0');
-	ret += neg + ft_longlen(nb);
+	ret += neg + nblen;
 	if (print == 0)
 		ft_putnbr(nb);
 	return (ret);

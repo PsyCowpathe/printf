@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/13 17:09:13 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 16:18:17 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,19 @@ void	advanced_hex_conv(t_flags *data, int size, unsigned int nb)
 	data->total += i + hex_size(nb);
 }
 
+int		pre_hex(t_flags *data, va_list arg, int *size, int *i)
+{
+	int		nb;
+
+	nb = (unsigned int)va_arg(arg, unsigned int);
+	*size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
+	*size = (data->space > *size) ? data->space : *size;
+	*size -= hex_size(nb);
+	if (nb == 0 && data->precision == 1 && data->preclen == 0)
+		*i -= 1;
+	return (nb);
+}
+
 void	hex_conv(t_flags *data, va_list arg)
 {
 	unsigned int	nb;
@@ -68,17 +81,13 @@ void	hex_conv(t_flags *data, va_list arg)
 	int				size;
 
 	i = 0;
-	nb = (unsigned int)va_arg(arg, unsigned int);
-	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
-	size = (data->space > size) ? data->space : size;
-	size -= hex_size(nb);
-	if (nb == 0 && data->precision == 1 && data->preclen == 0)
-		i--;
+	nb = pre_hex(data, arg, &size, &i);
 	if (data->align == 1)
 		return (advanced_hex_conv(data, size, nb));
 	while (i < size)
 	{
-		if (data->fill == 1 && data->preclen < 0 && i <= data->fillen - data->preclen)
+		if (data->fill == 1 && data->preclen < 0
+		&& i <= data->fillen - data->preclen)
 			ft_putchar('0');
 		else if ((data->precision == 1 && i < data->fillen - data->preclen)
 		|| i < data->space - data->preclen)

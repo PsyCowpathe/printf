@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/16 16:54:36 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 16:18:15 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_struct(t_flags data)
 {
 	ft_putstr("Primary = ");
-	ft_putchar(data.primary);	
+	ft_putchar(data.primary);
 	ft_putchar('\n');
 	ft_putstr("Alignement = ");
 	ft_putnbr(data.align);

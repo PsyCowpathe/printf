@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/17 18:02:10 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 17:48:22 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int		set_struct(t_flags *data, va_list arg, char *cut)
 		i++;
 	}
 	data->primary = cut[i];
-	//print_struct(*data);
 	if (start_conv(data, arg) == 0)
 		return (0);
 	ft_putstr(cut + i + 1);
@@ -190,42 +189,3 @@ int		cut_flags(t_flags data, va_list arg)
 	}
 	return (data.total);
 }
-
-/*int		cut_flags(t_flags data, va_list arg)
-{
-	int		i;
-	char	*cut;
-	
-	i = 0;
-	data.total = 0;
-	data.get_arg = 1;
-	while (data.form[i])
-	{
-		if (data.form[i] == '%')
-		{
-			data.total += print_percent(data.form, &i);
-			i = i + 1;
-			if ((cut = get_flags(&data, data.form, &i)) == NULL)
-				return (data.total);
-			if (data.get_arg == 0 && i != (int)ft_strlen(data.form))
-				i++;
-			if (verif_flags(data, cut) >= 0)
-			{
-				if (set_struct(&data, arg, cut) == 0)
-					return (data.total);
-			}
-			else
-			{
-				data.total += ft_strlen(cut);
-				ft_putstr(cut);
-			}
-			free(cut);
-		}
-		else
-		{
-			ft_putchar(data.form[i++]);
-			data.total++;
-		}
-	}
-	return (data.total);
-}*/
