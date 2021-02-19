@@ -6,14 +6,15 @@
 #    By: agirona <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/04 07:55:45 by agirona           #+#    #+#              #
-#    Updated: 2021/02/04 10:20:24 by agirona          ###   ########lyon.fr    #
+#    Updated: 2021/02/19 15:42:53 by agirona          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= libftprintf.a
 
-SRCS	= ft_printf.c parsing.c init.c printf_utils.c hex_conv.c idu_conv.c \
-		  psc_conv.c ft_putnbr_base.c
+SRCS	= ft_printf.c parsing.c init.c printf_utils.c hex_conv.c id_conv.c \
+		  advanced_id_conv.c u_conv.c psc_conv.c ft_putnbr_base.c \
+		  advanced_u_conv.c
 
 OBJS	= ${SRCS:.c=.o}
 
