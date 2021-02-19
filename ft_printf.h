@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/18 17:48:21 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/19 16:52:29 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,19 @@ void	address_conv(t_flags *data, va_list arg);
 void	hex_conv(t_flags *data, va_list arg);
 int		ft_long_size_base(uintptr_t nbr, char *base);
 void	char_conv(t_flags *data, va_list arg);
-void	struct_init(t_flags *data);
+void	*struct_init(t_flags *data);
 int		print_char(int len, char c);
 void	advanced_int_conv(t_flags *data, long long nb, int neg);
 void	with_prec(t_flags *data, long long nb, int neg);
 int		preclen_is_upper(t_flags *data, long long nb, int neg, int wich);
+void	advanced_unsigned_conv(t_flags *data, long long nb);
+int		u_preclen_is_upper(t_flags *data, long long nb, char *tmp, int wich);
+int		get_nb(t_flags *data, va_list arg, char *cut, int *i);
+void	moin(t_flags *data, va_list arg, char *cut, int *i);
+void	zero(t_flags *data, va_list arg, char *cut, int *i);
+void	dot(t_flags *data, va_list arg, char *cut, int *i);
+void	asterisk(t_flags *data, va_list arg, char *cut, int *i);
+void	nombre(t_flags *data, va_list arg, char *cut, int *i);
 
 void	print_struct(t_flags data);
 

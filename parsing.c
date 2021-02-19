@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/18 17:48:22 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/19 16:52:30 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,19 @@ int		start_conv(t_flags *data, va_list arg)
 	if (data->noprim == 1)
 		string_conv(data, "");
 	if (data->primary == 's')
-	{
 		string_conv(data, va_arg(arg, char *));
-	}
 	else if (data->primary == 'd')
-	{
 		int_conv(data, arg);
-	}
 	else if (data->primary == 'i')
-	{
 		int_conv(data, arg);
-	}
 	else if (data->primary == 'c')
 		char_conv(data, arg);
 	else if (data->primary == 'u')
-	{
 		unsigned_conv(data, arg);
-	}
 	else if (data->primary == 'p')
 		address_conv(data, arg);
 	else if (data->primary == 'x' || data->primary == 'X')
-	{
 		hex_conv(data, arg);
-	}
 	return (1);
 }
 
@@ -54,7 +44,7 @@ int		get_nb(t_flags *data, va_list arg, char *cut, int *i)
 	while (cut[c] && (cut[c] >= '0' && cut[c] <= '9'))
 		c++;
 	if ((tmp = malloc(sizeof(char) * c + 1)) == NULL)
-	{			
+	{
 		free(cut);
 		data->error = 1;
 		return (0);
@@ -63,69 +53,13 @@ int		get_nb(t_flags *data, va_list arg, char *cut, int *i)
 	if (cut[*i] < '0' || cut[*i] > '9')
 		*i += 1;
 	while (cut[*i] && (cut[*i] >= '0' && cut[*i] <= '9'))
-	{
-		tmp[c] = cut[*i];
-		*i += 1;
-		c++;
-	}
+		tmp[c++] = cut[(*i)++];
 	if (cut[*i] < '0' || cut[*i] > '9')
 		*i -= 1;
 	tmp[c] = '\0';
 	c = ft_atoi(tmp);
 	free(tmp);
 	return (c);
-}
-
-int		set_struct(t_flags *data, va_list arg, char *cut)
-{
-	int		i;
-
-	i = 0;
-	struct_init(data);
-	while (cut[i] && ft_ischar(data->primlist, cut[i]) != 1)
-	{
-		if (cut[i] >= '1' && cut[i] <= '9')
-		{
-			data->space = ft_abs(get_nb(data, arg, cut, &i));
-			if (data->error == 1)
-				return (0);
-		}
-		else if (cut[i] == '-')
-		{
-			data->align = 1;
-		}
-		else if (cut[i] == '0')
-		{
-			data->fill = 1;
-			data->fillen = get_nb(data, arg, cut, &i);
-			if (data->error == 1)
-				return (0);
-			if (data->fillen < 0)
-				data->align = 1;
-			data->fillen = ft_abs(data->fillen);
-		}
-		else if (cut[i] == '.')
-		{
-			data->precision = 1;
-			data->preclen = get_nb(data, arg, cut, &i);
-			if (data->error == 1)
-				return (0);
-		}
-		else if (cut[i] == '*' && (i == 0 || (cut[i - 1] != '.' && cut[i - 1] != '0')))
-		{
-			data->space = va_arg(arg, int);
-			if (data->space < 0)
-				data->align = 1;
-			data->space = ft_abs(data->space);
-		}
-		i++;
-	}
-	data->primary = cut[i];
-	if (start_conv(data, arg) == 0)
-		return (0);
-	ft_putstr(cut + i + 1);
-	data->total += ft_strlen(cut) - i - 1;
-	return (1);
 }
 
 char	*get_flags(t_flags *data, char *form, int *i)
@@ -154,11 +88,45 @@ char	*get_flags(t_flags *data, char *form, int *i)
 	return (cut);
 }
 
+int		set_struct(t_flags *data, va_list arg, char *cut)
+{
+	void	(*tabft[5])(t_flags*, va_list, char*, int*);
+	char	*cs;
+	int		i;
+	int		c;
+
+	i = 0;
+	cs = "-0.*123456789";
+	struct_init(data);
+	(tabft[0]) = &moin;
+	(tabft[1]) = &zero;
+	(tabft[2]) = &dot;
+	(tabft[3]) = &asterisk;
+	(tabft[4]) = &nombre;
+	while (cut[i] && ft_ischar(data->primlist, cut[i]) != 1)
+	{
+		c = 0;
+		while (cs[c] && cut[i] != cs[c])
+			c++;
+		if (c > 4)
+			c = 4;
+		(*tabft[c])(data, arg, cut, &i);
+		if (data->error == 1)
+			return (0);
+		i++;
+	}
+	data->primary = cut[i];
+	if (start_conv(data, arg) == 0)
+		return (0);
+	ft_putstr(cut + i + 1);
+	data->total += ft_strlen(cut) - i - 1;
+	return (1);
+}
+
 int		cut_flags(t_flags data, va_list arg)
 {
 	int		i;
 	char	*cut;
-	(void)arg;
 
 	i = 0;
 	data.noprim = 0;

@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/18 17:48:27 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/19 16:52:32 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	mainprintf(int argc, char **argv)
 	int		ret2;
 	int		nb;
 	int		v;
-	int		a = 3;
+	int		a = 0;
 	int		b = 4;
 	int		c = 8;
 //	int		i = -10;

@@ -6,32 +6,49 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 06:32:22 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/11 14:54:01 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/19 16:52:28 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		flags_init(char **primary, char *plist, char **secondary, char *slist)
+void	moin(t_flags *data, va_list arg, char *cut, int *i)
 {
-	int		i;
+	(void)i;
+	(void)cut;
+	(void)arg;
+	data->align = 1;
+}
 
-	i = -1;
-	if ((*primary = malloc(sizeof(char) * FPRIMARY + 1)) == NULL)
-		return (0);
-	if ((*secondary = malloc(sizeof(char) * FSECONDARY + 1)) == NULL)
+void	zero(t_flags *data, va_list arg, char *cut, int *i)
+{
+	data->fill = 1;
+	data->fillen = get_nb(data, arg, cut, i);
+	if (data->fillen < 0)
+		data->align = 1;
+	data->fillen = ft_abs(data->fillen);
+}
+
+void	dot(t_flags *data, va_list arg, char *cut, int *i)
+{
+	data->precision = 1;
+	data->preclen = get_nb(data, arg, cut, i);
+}
+
+void	asterisk(t_flags *data, va_list arg, char *cut, int *i)
+{
+	if (i == 0 || (cut[*i - 1] != '.' && cut[*i - 1] != '0'))
 	{
-		free(*primary);
-		return (0);
+		data->space = va_arg(arg, int);
+		if (data->space < 0)
+			data->align = 1;
+		data->space = ft_abs(data->space);
 	}
-	while (plist[++i])
-		primary[0][i] = plist[i];
-	primary[0][i] = '\0';
-	i = -1;
-	while (slist[++i])
-		secondary[0][i] = slist[i];
-	secondary[0][i] = '\0';
-	return (1);
+}
+
+void	nombre(t_flags *data, va_list arg, char *cut, int *i)
+{
+	data->space = ft_abs(get_nb(data, arg, cut, &i));
 }
 
 void	struct_init(t_flags *data)
