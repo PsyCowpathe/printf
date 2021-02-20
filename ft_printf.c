@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/19 16:52:31 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/20 16:10:04 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,19 +87,20 @@ int		u_preclen_is_upper(t_flags *data, long long nb, char *tmp, int wich)
 
 int		ft_printf(const char *str, ...)
 {
-	va_list		arg;
 	int			ret;
 	t_flags		data;
 
 	if (flags_init(&data.primlist, "cspdiuxX%", &data.seclist, "-0.*") == 0)
 		return (0);
-	va_start(arg, str);
+	va_start(data.arg, str);
 	data.form = (char *)str;
 	if (!data.form)
 		return (0);
-	ret = cut_flags(data, arg);
+	data.noprim = 0;
+	data.total = 0;
+	ret = cut_flags(data);
 	free(data.primlist);
 	free(data.seclist);
-	va_end(arg);
+	va_end(data.arg);
 	return (ret);
 }

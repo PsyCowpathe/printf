@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:41:36 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/19 16:52:32 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/20 15:41:55 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ void	u_prec(t_flags *data, char *tmp, long long nb)
 	data->total += ret + data->nbsize - print;
 }
 
-void	unsigned_conv(t_flags *data, va_list arg)
+void	unsigned_conv(t_flags *data)
 {
 	long long	nb;
 	char		*tmp;
 
-	nb = (unsigned int)va_arg(arg, unsigned int);
+	nb = (unsigned int)va_arg(data->arg, unsigned int);
 	data->nbsize = ft_longlen(nb);
 	if (data->align == 1)
 		return (advanced_unsigned_conv(data, nb));

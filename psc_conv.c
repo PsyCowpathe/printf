@@ -6,13 +6,13 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:39:04 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/18 16:18:17 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/20 15:41:57 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void		char_conv(t_flags *data, va_list arg)
+void		char_conv(t_flags *data)
 {
 	int		size;
 	int		i;
@@ -21,7 +21,7 @@ void		char_conv(t_flags *data, va_list arg)
 	size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
 	size = (data->space > size) ? data->space : size;
 	i = 0;
-	nb = va_arg(arg, int);
+	nb = va_arg(data->arg, int);
 	if (data->align == 1)
 	{
 		ft_putchar(nb);
@@ -89,11 +89,11 @@ void		string_conv(t_flags *data, char *str)
 	data->total += i + c + data->noprim;
 }
 
-long long	pre_address(t_flags *data, va_list arg, int *size, long long *cpy)
+long long	pre_address(t_flags *data, int *size, long long *cpy)
 {
 	long long	ptr;
 
-	ptr = (unsigned long long)va_arg(arg, unsigned long long);
+	ptr = (unsigned long long)va_arg(data->arg, unsigned long long);
 	*cpy = ptr;
 	*size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
 	*size = (data->space > *size) ? data->space - 2 : *size - 2;
@@ -118,7 +118,7 @@ long long	pre_address(t_flags *data, va_list arg, int *size, long long *cpy)
 	return (ptr);
 }
 
-void		address_conv(t_flags *data, va_list arg)
+void		address_conv(t_flags *data)
 {
 	int			i;
 	int			size;
@@ -126,7 +126,7 @@ void		address_conv(t_flags *data, va_list arg)
 	long long	cpy;
 
 	i = 0;
-	ptr = pre_address(data, arg, &size, &cpy);
+	ptr = pre_address(data, &size, &cpy);
 	while (cpy > 0)
 	{
 		cpy /= 16;

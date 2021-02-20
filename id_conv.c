@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 12:48:14 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/18 17:48:20 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/20 15:42:16 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,13 @@ void	no_prec(t_flags *data, long long nb, int neg)
 	data->total += ret + neg + data->nbsize;
 }
 
-void	int_conv(t_flags *data, va_list arg)
+void	int_conv(t_flags *data)
 {
 	long long	nb;
 	int			neg;
 
 	neg = 0;
-	nb = va_arg(arg, int);
+	nb = va_arg(data->arg, int);
 	if (nb < 0)
 	{
 		neg = 1;

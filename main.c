@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/19 16:52:32 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/20 14:17:04 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	mainprintf(int argc, char **argv)
 		//	ft_putstr("***************error*************************");
 		//ret = dprintf(1, param, l);
 		ft_putchar('\n');
+		while (1);
 //		b++;
 //		}
 //		a++;

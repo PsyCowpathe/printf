@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/18 16:18:17 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/20 15:42:02 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ void	advanced_hex_conv(t_flags *data, int size, unsigned int nb)
 	data->total += i + hex_size(nb);
 }
 
-int		pre_hex(t_flags *data, va_list arg, int *size, int *i)
+int		pre_hex(t_flags *data, int *size, int *i)
 {
 	int		nb;
 
-	nb = (unsigned int)va_arg(arg, unsigned int);
+	nb = (unsigned int)va_arg(data->arg, unsigned int);
 	*size = (data->preclen > data->fillen) ? data->preclen : data->fillen;
 	*size = (data->space > *size) ? data->space : *size;
 	*size -= hex_size(nb);
@@ -74,14 +74,14 @@ int		pre_hex(t_flags *data, va_list arg, int *size, int *i)
 	return (nb);
 }
 
-void	hex_conv(t_flags *data, va_list arg)
+void	hex_conv(t_flags *data)
 {
 	unsigned int	nb;
 	int				i;
 	int				size;
 
 	i = 0;
-	nb = pre_hex(data, arg, &size, &i);
+	nb = pre_hex(data, &size, &i);
 	if (data->align == 1)
 		return (advanced_hex_conv(data, size, nb));
 	while (i < size)
