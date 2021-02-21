@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 15:26:15 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/19 16:52:31 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 15:06:26 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ void	u_advanced_no_prec(t_flags *data, char *tmp)
 	int		ret;
 
 	ft_putstr(tmp);
+	ret = 0;
 	if (data->fill == 1)
 	{
 		len = data->fillen - data->nbsize;
 		ret = print_char(len, '0');
 	}
-	else
+	if (data->space > 0)
 	{
 		len = data->space - data->nbsize;
 		ret = print_char(len, ' ');
@@ -92,6 +93,7 @@ void	u_advanced_prec(t_flags *data, char *tmp, long long nb)
 	ret = print_char(zero + print, '0');
 	if (print == 0)
 		ft_putstr(tmp);
+	ret += print_char(data->space - data->nbsize , ' ');
 	data->total += ret + data->nbsize - print;
 }
 

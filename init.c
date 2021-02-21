@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 06:32:22 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/20 15:42:39 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 15:12:01 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	dot(t_flags *data, char *cut, int *i)
 
 void	asterisk(t_flags *data, char *cut, int *i)
 {
-	if (i == 0 || (cut[*i - 1] != '.' && cut[*i - 1] != '0'))
+	if (*i == 0 || (cut[*i - 1] != '.' && cut[*i - 1] != '0'))
 	{
 		data->space = va_arg(data->arg, int);
 		if (data->space < 0)
@@ -54,7 +54,7 @@ void	*struct_init(t_flags *data)
 {
 	void	(**tabft)(t_flags*, char*, int*);
 
-	if (((tabft) = malloc(sizeof(void*) * 5)) == NULL)
+	if (((tabft) = malloc(sizeof(void*) * 6)) == NULL)
 		return (NULL);
 	data->align = 0;
 	data->fill = 0;
@@ -67,6 +67,7 @@ void	*struct_init(t_flags *data)
 	(tabft[1]) = &zero;
 	(tabft[2]) = &dot;
 	(tabft[3]) = &asterisk;
-	(tabft[4]) = &nombre;
+	(tabft[4]) = &hashtag;
+	(tabft[5]) = &nombre;
 	return (tabft);
 }

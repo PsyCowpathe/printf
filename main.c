@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 09:27:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/20 14:17:04 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 15:09:36 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	mainprintf(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-	int		ret1;
+	int		ret1 = 0;
 	int		ret2;
 	int		nb;
 	int		v;
 	int		a = 0;
 	int		b = 4;
-	int		c = 8;
+//	int		c = 8;
 //	int		i = -10;
 //	int		c = 97;
 //	int		j = -12;
@@ -43,7 +43,7 @@ void	mainprintf(int argc, char **argv)
 //	int		e = -2147483648;
 	//char	*n = "abcdefghijklmnop";
 
-	char	param[] = "%-*.*u";
+	char	param[] = "%#i";
 	nb = 1;
 	v = 0;
 	ft_putstr(param);
@@ -57,18 +57,18 @@ void	mainprintf(int argc, char **argv)
 		ft_putstr(" b = ");
 		ft_putnbr(b);
 		ft_putchar('\n');
-		ret1 = ft_printf(param, a, b, c);
+		ret1 = ft_printf("%x", 1021);
 		ft_putstr("| retour = ");
 		ft_putnbr(ret1);
 		ft_putchar('\n');
-		ret2 = dprintf(1, param, a, b, c);
+		ret2 = dprintf(1, "%#x", 1021);
 		ft_putstr("| retour = ");
 		ft_putnbr(ret2);
 		//if (ret1 != ret2)
 		//	ft_putstr("***************error*************************");
 		//ret = dprintf(1, param, l);
 		ft_putchar('\n');
-		while (1);
+		//while (1);
 //		b++;
 //		}
 //		a++;

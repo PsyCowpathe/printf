@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/20 16:11:44 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 15:12:22 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int		set_struct(t_flags *data, char *cut)
 	int		c;
 
 	i = -1;
-	cs = "-0.*123456789";
+	cs = "-0.*#123456789";
 	if (((tabft) = struct_init(data)) == NULL)
 		return (0);
 	while (cut[++i] && ft_ischar(data->primlist, cut[i]) != 1)
@@ -118,9 +118,9 @@ int		set_struct(t_flags *data, char *cut)
 		c = 0;
 		while (cs[c] && cut[i] != cs[c])
 			c++;
-		if (c > 4 && c <= 12)
-			c = 4;
-		if (c <= 12)
+		if (c > 5 && c <= 13)
+			c = 5;
+		if (c <= 13)
 			(*tabft[c])(data, cut, &i);
 		if (data->error == 1)
 		{
