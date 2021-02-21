@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/20 15:41:36 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 15:12:33 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_PRINTF_H
 
 # define FPRIMARY 9
-# define FSECONDARY 4
+# define FSECONDARY 5
 
 #include "libft/libft.h"
 # include <stdbool.h>
