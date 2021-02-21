@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/21 15:12:22 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 17:29:27 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*get_flags(t_flags *data, char *form, int *i)
 		*i += 1;
 		size++;
 	}
-	if (primary == 0 && size != 0)
+	if (primary == 0 && size != 0 && *i != (int)ft_strlen(form))
 		data->noprim = 1;
 	cut[size] = '\0';
 	return (cut);
@@ -91,6 +91,9 @@ char	*get_flags(t_flags *data, char *form, int *i)
 int		endset(t_flags *d, void (***t)(t_flags *d, char*, int*), char *c, int i)
 {
 	d->primary = c[i];
+	if (d->primary == '\0' && d->noprim == 0)
+		return (0);
+	print_struct(*d);
 	if (start_conv(d) == 0)
 	{
 		free((*t));
@@ -110,7 +113,7 @@ int		set_struct(t_flags *data, char *cut)
 	int		c;
 
 	i = -1;
-	cs = "-0.*#123456789";
+	cs = "-0.*#+ 123456789";
 	if (((tabft) = struct_init(data)) == NULL)
 		return (0);
 	while (cut[++i] && ft_ischar(data->primlist, cut[i]) != 1)
@@ -118,9 +121,9 @@ int		set_struct(t_flags *data, char *cut)
 		c = 0;
 		while (cs[c] && cut[i] != cs[c])
 			c++;
-		if (c > 5 && c <= 13)
-			c = 5;
-		if (c <= 13)
+		if (c > 7 && c <= 15)
+			c = 7;
+		if (c <= 15)
 			(*tabft[c])(data, cut, &i);
 		if (data->error == 1)
 		{

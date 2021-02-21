@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 12:48:14 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/20 15:42:16 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 17:29:25 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	with_prec(t_flags *data, long long nb, int neg)
 	space = data->preclen - data->nbsize;
 	if (neg == 1)
 		ft_putchar('-');
+	else if (data->plus == 1 && ++data->total)
+			ft_putchar('+');
 	ret = print_char(space + print, '0');
 	if (print == 0)
 		ft_putnbr(nb);
@@ -47,6 +49,8 @@ void	fill_prec(t_flags *data, long long nb, int neg)
 		zero = ret;
 		if (neg == 1)
 			ft_putchar('-');
+		else if (data->plus == 1 && ++data->total)
+			ft_putchar('+');
 		ret += print_char(data->fillen - zero, '0');
 		if (print == 0)
 			ft_putnbr(nb);
@@ -73,6 +77,8 @@ void	space_prec(t_flags *data, long long nb, int neg)
 		zero = ret;
 		if (neg == 1)
 			ft_putchar('-');
+		else if (data->plus == 1 && ++data->total)
+			ft_putchar('+');
 		ret += print_char(data->space - zero, '0');
 		if (print == 0)
 			ft_putnbr(nb);
@@ -92,6 +98,8 @@ void	no_prec(t_flags *data, long long nb, int neg)
 		len = data->fillen - neg - data->nbsize;
 		if (neg == 1)
 			ft_putchar('-');
+		else if (data->plus == 1 && ++data->total)
+			ft_putchar('+');
 		ret = print_char(len, '0');
 	}
 	else
@@ -100,6 +108,8 @@ void	no_prec(t_flags *data, long long nb, int neg)
 		ret = print_char(len, ' ');
 		if (neg == 1)
 			ft_putchar('-');
+		else if (data->plus == 1)
+			ft_putchar('+');
 	}
 	ft_putnbr(nb);
 	data->total += ret + neg + data->nbsize;

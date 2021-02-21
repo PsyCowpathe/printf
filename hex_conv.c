@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/20 15:42:02 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 17:29:28 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,18 @@ int		hex_size(unsigned int nb)
 	return (i);
 }
 
-void	print_hex(long long nb, char c)
+void	print_hex(t_flags *data, long long nb, char c)
 {
+	if (data->hashtag == 1 && c == 'X' && nb != 0)
+	{
+		ft_putstr("0X");
+		data->total += 2;
+	}
+	else if (data->hashtag == 1 && nb != 0)
+	{
+		ft_putstr("0x");
+		data->total += 2;
+	}
 	if (c == 'X')
 		ft_long_putnbr_base(nb, "0123456789ABCDEF");
 	else
@@ -52,7 +62,7 @@ void	advanced_hex_conv(t_flags *data, int size, unsigned int nb)
 	if (nb == 0 && data->precision == 1 && data->preclen == 0)
 		i--;
 	else
-		print_hex(nb, data->primary);
+		print_hex(data, nb, data->primary);
 	while (i < size)
 	{
 		ft_putchar(' ');
@@ -98,5 +108,5 @@ void	hex_conv(t_flags *data)
 	}
 	data->total += i + hex_size(nb);
 	if (!(nb == 0 && data->precision == 1 && data->preclen == 0))
-		print_hex(nb, data->primary);
+		print_hex(data, nb, data->primary);
 }

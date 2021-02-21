@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/21 15:12:33 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 17:29:30 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_PRINTF_H
 
 # define FPRIMARY 9
-# define FSECONDARY 5
+# define FSECONDARY 7
 
 #include "libft/libft.h"
 # include <stdbool.h>
@@ -39,6 +39,9 @@ typedef struct	s_flags
 	bool		error;
 	bool		noprim;
 	int			nbsize;
+	bool		hashtag;
+	bool		plus;
+	bool		setspace;
 	va_list		arg;
 }				t_flags;
 

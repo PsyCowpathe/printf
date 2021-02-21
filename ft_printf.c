@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/21 15:13:45 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/21 17:29:30 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ void	print_struct(t_flags data)
 	ft_putchar('\n');
 	ft_putstr("Espace = ");
 	ft_putnbr(data.space);
+	ft_putchar('\n');
+	ft_putstr("Hashtag = ");
+	ft_putnbr(data.hashtag);
+	ft_putchar('\n');
+	ft_putstr("Plus = ");
+	ft_putnbr(data.plus);
+	ft_putchar('\n');
+	ft_putstr("Space = ");
+	ft_putnbr(data.setspace);
 	ft_putchar('\n');
 	ft_putchar('\n');
 }
@@ -90,7 +99,7 @@ int		ft_printf(const char *str, ...)
 	int			ret;
 	t_flags		data;
 
-	if (flags_init(&data.primlist, "cspdiuxX%", &data.seclist, "-0.*#") == 0)
+	if (flags_init(&data.primlist, "cspdiuxX%", &data.seclist, "-0.*#+ ") == 0)
 		return (0);
 	va_start(data.arg, str);
 	data.form = (char *)str;
