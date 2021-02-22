@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:16:02 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/21 17:29:27 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/22 17:58:48 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int		endset(t_flags *d, void (***t)(t_flags *d, char*, int*), char *c, int i)
 	d->primary = c[i];
 	if (d->primary == '\0' && d->noprim == 0)
 		return (0);
-	print_struct(*d);
+	//print_struct(*d);
 	if (start_conv(d) == 0)
 	{
 		free((*t));
