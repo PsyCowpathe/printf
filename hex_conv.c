@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/21 17:29:28 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/24 16:27:04 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ void	print_hex(t_flags *data, long long nb, char c)
 		data->total += 2;
 	}
 	if (c == 'X')
-		ft_long_putnbr_base(nb, "0123456789ABCDEF");
+		ft_llong_putnbr_base(nb, "0123456789ABCDEF");
 	else
-		ft_long_putnbr_base(nb, "0123456789abcdef");
+		ft_llong_putnbr_base(nb, "0123456789abcdef");
 }
 
 void	advanced_hex_conv(t_flags *data, int size, unsigned int nb)

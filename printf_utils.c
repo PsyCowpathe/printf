@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:22:06 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/22 17:58:47 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/24 16:26:58 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,52 @@ int		print_char(int len, char c)
 	return (i);
 }
 
-int		verif_flags(t_flags data, char *cut)
+int		u_preclen_is_upper(t_flags *data, long long nb, char *tmp, int wich)
 {
-	int		i;
+	int		print;
+	int		ret;
+	int		zero;
+	int		nblen;
 
-	i = 0;
-	while (cut[i])
-	{
-		if (ft_ischar(data.primlist, cut[i]) == 1)
-			return (i);
-		if (ft_ischar(data.seclist, cut[i]) == 0
-		&& !(cut[i] >= '0' && cut[i] <= '9'))
-			return (-1);
-		i++;
-	}
-	return (-1);
+	nblen = data->nbsize;
+	ret = 0;
+	print = (nb == 0 && data->precision == 1 && data->preclen == 0) ? 1 : 0;
+	zero = data->preclen - nblen;
+	if (wich == 1 && data->preclen < 0)
+		zero = data->fillen - nblen;
+	if (wich == 2 && data->preclen < 0)
+		zero = data->space - data->nbsize;
+	if (wich != 2)
+		ret = print_char(zero + print, '0');
+	else if (wich == 2 && data->preclen > data->space)
+		ret = print_char(zero + print, '0');
+	else if (wich == 2)
+		ret = print_char(zero + print, ' ');
+	ret += nblen;
+	if (print == 0)
+		ft_putstr(tmp);
+	return (ret);
+}
+
+int		preclen_is_upper(t_flags *data, long long nb, int neg, int wich)
+{
+	int		print;
+	int		ret;
+	int		zero;
+	int		nblen;
+
+	nblen = ft_longlen(nb);
+	print = (nb == 0 && data->precision == 1 && data->preclen == 0) ? 1 : 0;
+	zero = data->preclen - nblen;
+	if (wich == 1 && data->preclen < 0)
+		zero = data->fillen - nblen - neg;
+	if (neg == 1)
+		ft_putchar('-');
+	ret = print_char(zero + print, '0');
+	ret += neg + nblen;
+	if (print == 0)
+		ft_putnbr(nb);
+	return (ret);
 }
 
 char	*ft_long_itoa(long long n)
@@ -67,29 +98,4 @@ char	*ft_long_itoa(long long n)
 		len--;
 	}
 	return (res);
-}
-
-int		preclen_is_upper(t_flags *data, long long nb, int neg, int wich)
-{
-	int		print;
-	int		ret;
-	int		zero;
-	int		nblen;
-
-	nblen = ft_longlen(nb);
-	if (data->setspace == 1 && neg == 0 && ++data->total)
-			ft_putchar(' ');
-	print = (nb == 0 && data->precision == 1 && data->plus == 0 && data->preclen == 0) ? 1 : 0;
-	zero = data->preclen - nblen;
-	if (wich == 1 && data->preclen < 0)
-		zero = data->fillen - nblen - neg;
-	if (neg == 1)
-		ft_putchar('-');
-	else if (data->plus == 1 && ++data->total)
-		ft_putchar('+');
-	ret = print_char(zero + print, '0');
-	ret += neg + nblen;
-	if (print == 0)
-		ft_putnbr(nb);
-	return (ret);
 }

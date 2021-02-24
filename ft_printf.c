@@ -6,92 +6,94 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/21 17:29:30 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/24 16:26:57 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	print_struct(t_flags data)
+int		get_nb(t_flags *data, char *cut, int *i)
 {
-	ft_putstr("Primary = ");
-	ft_putchar(data.primary);
-	ft_putchar('\n');
-	ft_putstr("Alignement = ");
-	ft_putnbr(data.align);
-	ft_putchar('\n');
-	ft_putstr("Remplissage = ");
-	ft_putnbr(data.fill);
-	ft_putstr(" Len = ");
-	ft_putnbr(data.fillen);
-	ft_putchar('\n');
-	ft_putstr("Precision = ");
-	ft_putnbr(data.precision);
-	ft_putstr(" Len = ");
-	ft_putnbr(data.preclen);
-	ft_putchar('\n');
-	ft_putstr("Espace = ");
-	ft_putnbr(data.space);
-	ft_putchar('\n');
-	ft_putstr("Hashtag = ");
-	ft_putnbr(data.hashtag);
-	ft_putchar('\n');
-	ft_putstr("Plus = ");
-	ft_putnbr(data.plus);
-	ft_putchar('\n');
-	ft_putstr("Space = ");
-	ft_putnbr(data.setspace);
-	ft_putchar('\n');
-	ft_putchar('\n');
-}
+	int		c;
+	char	*tmp;
 
-int		flags_init(char **primary, char *plist, char **secondary, char *slist)
-{
-	int		i;
-
-	i = -1;
-	if ((*primary = malloc(sizeof(char) * FPRIMARY + 1)) == NULL)
-		return (0);
-	if ((*secondary = malloc(sizeof(char) * FSECONDARY + 1)) == NULL)
+	c = *i + 1;
+	if (cut[c] == '*')
+		return (va_arg(data->arg, int));
+	while (cut[c] && (cut[c] >= '0' && cut[c] <= '9'))
+		c++;
+	if ((tmp = malloc(sizeof(char) * c + 1)) == NULL)
 	{
-		free(*primary);
+		free(cut);
+		data->error = 1;
 		return (0);
 	}
-	while (plist[++i])
-		primary[0][i] = plist[i];
-	primary[0][i] = '\0';
-	i = -1;
-	while (slist[++i])
-		secondary[0][i] = slist[i];
-	secondary[0][i] = '\0';
-	return (1);
+	c = 0;
+	if (cut[*i] < '0' || cut[*i] > '9')
+		*i += 1;
+	while (cut[*i] && (cut[*i] >= '0' && cut[*i] <= '9'))
+		tmp[c++] = cut[(*i)++];
+	if (cut[*i] < '0' || cut[*i] > '9')
+		*i -= 1;
+	tmp[c] = '\0';
+	c = ft_atoi(tmp);
+	free(tmp);
+	return (c);
 }
 
-int		u_preclen_is_upper(t_flags *data, long long nb, char *tmp, int wich)
+char	*get_flags(t_flags *data, char *form, int *i)
 {
-	int		print;
-	int		ret;
-	int		zero;
-	int		nblen;
+	char	*cut;
+	int		size;
+	int		primary;
 
-	nblen = data->nbsize;
-	ret = 0;
-	print = (nb == 0 && data->precision == 1 && data->preclen == 0) ? 1 : 0;
-	zero = data->preclen - nblen;
-	if (wich == 1 && data->preclen < 0)
-		zero = data->fillen - nblen;
-	if (wich == 2 && data->preclen < 0)
-		zero = data->space - data->nbsize;
-	if (wich != 2)
-		ret = print_char(zero + print, '0');
-	else if (wich == 2 && data->preclen > data->space)
-		ret = print_char(zero + print, '0');
-	else if (wich == 2)
-		ret = print_char(zero + print, ' ');
-	ret += nblen;
-	if (print == 0)
-		ft_putstr(tmp);
-	return (ret);
+	size = 0;
+	primary = 0;
+	while (form[*i + size] && form[*i + size] != '%')
+		size++;
+	cut = malloc(sizeof(char) * size + 1);
+	size = 0;
+	while (form[*i] && form[*i] != '%')
+	{
+		if (ft_ischar(data->primlist, form[*i]) == 1)
+			primary = 1;
+		cut[size] = form[*i];
+		*i += 1;
+		size++;
+	}
+	if (primary == 0 && size != 0 && *i != (int)ft_strlen(form))
+		data->noprim = 1;
+	cut[size] = '\0';
+	return (cut);
+}
+
+int		cut_flags(t_flags data)
+{
+	int		i;
+	char	*cut;
+
+	i = 0;
+	while (i < (int)ft_strlen(data.form))
+	{
+		if (data.form[i] == '%' && data.form[i + 1] == '%' && ++data.total)
+		{
+			ft_putchar('%');
+			i += 2;
+		}
+		else if (data.form[i] == '%')
+		{
+			i++;
+			cut = get_flags(&data, data.form, &i);
+			if (verif_flags(data, cut) >= 0 || data.noprim == 1)
+				set_struct(&data, cut);
+			if (data.noprim == 1)
+				i++;
+			free(cut);
+		}
+		else if (++data.total)
+			ft_putchar(data.form[i++]);
+	}
+	return (data.total);
 }
 
 int		ft_printf(const char *str, ...)

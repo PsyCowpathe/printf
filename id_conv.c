@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 12:48:14 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/22 17:58:47 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/24 16:26:59 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,11 @@ void	with_prec(t_flags *data, long long nb, int neg)
 	int		print;
 
 	print = 0;
-	if (data->setspace == 1 && neg == 0 && data->plus == 0 && ++data->total)
-			ft_putchar(' ');
 	if (nb == 0 && data->precision == 1 && data->preclen == 0)
 		print = 1;
 	space = data->preclen - data->nbsize;
 	if (neg == 1)
 		ft_putchar('-');
-	else if (data->plus == 1 && ++data->total)
-			ft_putchar('+');
 	ret = print_char(space + print, '0');
 	if (print == 0)
 		ft_putnbr(nb);
@@ -44,8 +40,6 @@ void	fill_prec(t_flags *data, long long nb, int neg)
 	print = (nb == 0 && data->precision == 1 && data->preclen == 0) ? 1 : 0;
 	if (data->fillen > data->preclen && data->preclen >= 0)
 	{
-		if (data->setspace == 1 && neg == 0 && data->plus == 0 && data->space <= data->nbsize && ++data->total)
-			ft_putchar(' ');
 		space = data->fillen - data->nbsize - neg;
 		if (data->preclen > data->nbsize)
 			space = data->fillen - data->preclen - neg;
@@ -53,8 +47,6 @@ void	fill_prec(t_flags *data, long long nb, int neg)
 		zero = ret;
 		if (neg == 1)
 			ft_putchar('-');
-		else if (data->plus == 1 && ++data->total)
-			ft_putchar('+');
 		ret += print_char(data->fillen - zero, '0');
 		if (print == 0)
 			ft_putnbr(nb);
@@ -74,8 +66,6 @@ void	space_prec(t_flags *data, long long nb, int neg)
 	print = (nb == 0 && data->precision == 1 && data->preclen == 0) ? 1 : 0;
 	if (data->space > data->preclen)
 	{
-		if (data->setspace == 1 && neg == 0 && data->plus == 0 && data->space <= data->nbsize && ++data->total)
-			ft_putchar(' ');
 		space = data->space - data->nbsize - neg;
 		if (data->preclen > data->nbsize)
 			space = data->space - data->preclen - neg;
@@ -83,8 +73,6 @@ void	space_prec(t_flags *data, long long nb, int neg)
 		zero = ret;
 		if (neg == 1)
 			ft_putchar('-');
-		else if (data->plus == 1 && ++data->total)
-			ft_putchar('+');
 		ret += print_char(data->space - zero, '0');
 		if (print == 0)
 			ft_putnbr(nb);
@@ -99,25 +87,19 @@ void	no_prec(t_flags *data, long long nb, int neg)
 	int		len;
 	int		ret;
 
-	if (data->setspace == 1 && neg == 0 && data->plus == 0 && ++data->total)
-			ft_putchar(' ');
 	if (data->fill == 1)
 	{
-		len = data->fillen - neg - data->nbsize - data->setspace;
+		len = data->fillen - neg - data->nbsize;
 		if (neg == 1)
 			ft_putchar('-');
-		else if (data->plus == 1 && ++data->total)
-			ft_putchar('+');
 		ret = print_char(len, '0');
 	}
 	else
 	{
-		len = data->space - neg - data->nbsize - data->setspace;
+		len = data->space - neg - data->nbsize;
 		ret = print_char(len, ' ');
 		if (neg == 1)
 			ft_putchar('-');
-		else if (data->plus == 1)
-			ft_putchar('+');
 	}
 	ft_putnbr(nb);
 	data->total += ret + neg + data->nbsize;
@@ -136,6 +118,10 @@ void	int_conv(t_flags *data)
 		nb = ft_abs(nb);
 	}
 	data->nbsize = ft_longlen(nb);
+	if (data->setspace == 1 && neg == 0 && data->plus == 0)
+		set_space(data);
+	if (data->plus == 1 && neg == 0)
+		set_plus(data);
 	if (data->align == 1)
 		return (advanced_int_conv(data, nb, neg));
 	if (data->precision == 0)

@@ -6,69 +6,32 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 06:32:22 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/22 17:58:46 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/24 16:27:01 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	moin(t_flags *data, char *cut, int *i)
+int		flags_init(char **primary, char *plist, char **secondary, char *slist)
 {
-	(void)i;
-	(void)cut;
-	data->align = 1;
-}
+	int		i;
 
-void	zero(t_flags *data, char *cut, int *i)
-{
-	data->fill = 1;
-	data->fillen = get_nb(data, cut, i);
-	if (data->fillen < 0)
-		data->align = 1;
-	data->fillen = ft_abs(data->fillen);
-}
-
-void	dot(t_flags *data, char *cut, int *i)
-{
-	data->precision = 1;
-	data->preclen = get_nb(data, cut, i);
-}
-
-void	asterisk(t_flags *data, char *cut, int *i)
-{
-	if (*i == 0 || (cut[*i - 1] != '.' && cut[*i - 1] != '0'))
+	i = -1;
+	if ((*primary = malloc(sizeof(char) * FPRIMARY + 1)) == NULL)
+		return (0);
+	if ((*secondary = malloc(sizeof(char) * FSECONDARY + 1)) == NULL)
 	{
-		data->space = va_arg(data->arg, int);
-		if (data->space < 0)
-			data->align = 1;
-		data->space = ft_abs(data->space);
+		free(*primary);
+		return (0);
 	}
-}
-
-void	nombre(t_flags *data, char *cut, int *i)
-{
-	data->space = ft_abs(get_nb(data, cut, i));
-}
-
-void	hashtag(t_flags *data, char *cut, int *i)
-{
-	(void)cut;
-	(void)i;
-	data->hashtag = 1;
-}
-
-void	plus(t_flags *data, char *cut, int *i)
-{
-	(void)cut;
-	(void)i;
-	data->plus = 1;
-}
-
-void	space(t_flags *data, char *cut, int *i)
-{
-	(void)cut;
-	(void)i;
-	data->setspace = 1;
+	while (plist[++i])
+		primary[0][i] = plist[i];
+	primary[0][i] = '\0';
+	i = -1;
+	while (slist[++i])
+		secondary[0][i] = slist[i];
+	secondary[0][i] = '\0';
+	return (1);
 }
 
 void	*struct_init(t_flags *data)
