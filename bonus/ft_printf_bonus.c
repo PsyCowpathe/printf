@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 16:50:19 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 12:37:35 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/25 12:43:59 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 int		get_nb(t_flags *data, char *cut, int *i)
 {
@@ -101,7 +101,7 @@ int		ft_printf(const char *str, ...)
 	int			ret;
 	t_flags		data;
 
-	if (flags_init(&data.primlist, "cspdiuxX%", &data.seclist, "-0.*") == 0)
+	if (flags_init(&data.primlist, "cspdiuxX%", &data.seclist, "-0.*#+ ") == 0)
 		return (0);
 	va_start(data.arg, str);
 	data.form = (char *)str;

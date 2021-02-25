@@ -6,13 +6,13 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 13:07:00 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 08:43:19 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/07 13:12:07 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr(int nb)
+void	ft_putnbr(long long nb)
 {
 	if (nb == -2147483648)
 	{

@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 17:38:34 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/25 12:32:13 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#ifndef FT_PRINTF_BONUS_H
+# define FT_PRINTF_BONUS_H
 
 # define FPRIMARY 9
-# define FSECONDARY 4
+# define FSECONDARY 7
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <stdbool.h>
+# include <unistd.h>
+# include <stdlib.h>
 # include <stdarg.h>
 # include <limits.h>
 
@@ -37,6 +39,9 @@ typedef struct	s_flags
 	bool		error;
 	bool		noprim;
 	int			nbsize;
+	bool		hashtag;
+	bool		plus;
+	bool		setspace;
 	va_list		arg;
 }				t_flags;
 
@@ -50,7 +55,6 @@ void			nombre(t_flags *data, char *cut, int *i);
 void			dot(t_flags *data, char *cut, int *i);
 void			zero(t_flags *data, char *cut, int *i);
 void			moin(t_flags *data, char *cut, int *i);
-void			asterisk(t_flags *data, char *cut, int *i);
 int				verif_flags(t_flags data, char *cut);
 int				set_struct(t_flags *data, char *cut);
 int				flags_init(char **primary,
@@ -83,5 +87,16 @@ void			advanced_int_conv(t_flags *data, long long nb, int neg);
 int				preclen_is_upper(t_flags *data,
 				long long nb, int neg, int wich);
 void			with_prec(t_flags *data, long long nb, int neg);
+
+/*
+**		Bonus
+*/
+
+void			space(t_flags *data, char *cut, int *i);
+void			plus(t_flags *data, char *cut, int *i);
+void			asterisk(t_flags *data, char *cut, int *i);
+void			hashtag(t_flags *data, char *cut, int *i);
+void			set_plus(t_flags *data);
+void			set_space(t_flags *data);
 
 #endif

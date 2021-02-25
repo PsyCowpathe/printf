@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   id_conv.c                                          :+:      :+:    :+:   */
+/*   id_conv_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 12:48:14 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 12:00:46 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/25 12:00:06 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 void	with_prec(t_flags *data, long long nb, int neg)
 {
@@ -118,6 +118,10 @@ void	int_conv(t_flags *data)
 		nb = ft_abs(nb);
 	}
 	data->nbsize = ft_longlen(nb);
+	if (data->setspace == 1 && neg == 0 && data->plus == 0)
+		set_space(data);
+	if (data->plus == 1 && neg == 0)
+		set_plus(data);
 	if (data->align == 1)
 		return (advanced_int_conv(data, nb, neg));
 	if (data->precision == 0)

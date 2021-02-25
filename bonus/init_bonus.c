@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 06:32:22 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 12:42:41 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/25 12:13:19 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 int		flags_init(char **primary, char *plist, char **secondary, char *slist)
 {
@@ -47,10 +47,16 @@ void	*struct_init(t_flags *data)
 	data->preclen = 0;
 	data->space = 0;
 	data->error = 0;
+	data->hashtag = 0;
+	data->plus = 0;
+	data->setspace = 0;
 	(tabft[0]) = &moin;
 	(tabft[1]) = &zero;
 	(tabft[2]) = &dot;
 	(tabft[3]) = &asterisk;
-	(tabft[4]) = &nombre;
+	(tabft[4]) = &hashtag;
+	(tabft[5]) = &plus;
+	(tabft[6]) = &space;
+	(tabft[7]) = &nombre;
 	return (tabft);
 }

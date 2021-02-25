@@ -6,14 +6,16 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 06:39:11 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 06:39:45 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/07 13:06:50 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_abs(int  nb)
+long long	ft_abs(long long nb)
 {
+	if (nb == -2147483648)
+		return (2147483648);
 	if (nb < 0)
 		return (nb * -1);
 	else

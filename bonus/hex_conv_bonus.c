@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hex_conv.c                                         :+:      :+:    :+:   */
+/*   hex_conv_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 17:38:35 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/25 17:38:34 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 int		hex_size(unsigned int nb)
 {
@@ -69,6 +69,16 @@ int		pre_hex(t_flags *data, int *size, int *i)
 	*size -= hex_size(nb);
 	if (nb == 0 && data->precision == 1 && data->preclen == 0)
 		*i -= 1;
+	if (data->hashtag == 1 && data->primary == 'X' && nb != 0)
+	{
+		ft_putstr("0X");
+		data->total += 2;
+	}
+	else if (data->hashtag == 1 && nb != 0)
+	{
+		ft_putstr("0x");
+		data->total += 2;
+	}
 	return (nb);
 }
 

@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/25 18:18:44 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/04 06:43:19 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/18 14:18:16 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ int					ft_ischar(const char *str, char c);
 char				*ft_strnew(size_t size);
 void				ft_putchar(char c);
 void				ft_putstr(char *str);
-void				ft_putnbr(int nb);
+void				ft_putnbr(long long nb);
 void				ft_sort_int_tab(int *tab, int size);
 char				*ft_strncpy(char *dest, char *src, unsigned int n);
 void				ft_putnbr_base(int nbr, char *base);
 void				ft_swap(int *a, int *b);
 void				ft_putstr_non_printable(char *str);
 int					ft_longlen(long long nb);
-int					ft_abs(int  nb);
+long long			ft_abs(long long nb);
 #endif
