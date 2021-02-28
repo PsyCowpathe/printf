@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 12:48:14 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 12:00:06 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/28 17:27:03 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	with_prec(t_flags *data, long long nb, int neg)
 	space = data->preclen - data->nbsize;
 	if (neg == 1)
 		ft_putchar('-');
+	if (neg == 0 && data->plus == 1 && data->align == 0)
+		ft_putchar('+');
 	ret = print_char(space + print, '0');
 	if (print == 0)
 		ft_putnbr(nb);
@@ -48,6 +50,8 @@ void	fill_prec(t_flags *data, long long nb, int neg)
 		if (neg == 1)
 			ft_putchar('-');
 		ret += print_char(data->fillen - zero, '0');
+		if (neg == 0 && data->plus == 1)
+			ft_putchar('+');
 		if (print == 0)
 			ft_putnbr(nb);
 	}
@@ -73,6 +77,8 @@ void	space_prec(t_flags *data, long long nb, int neg)
 		zero = ret;
 		if (neg == 1)
 			ft_putchar('-');
+		if (neg == 0 && data->plus == 1)
+			ft_putchar('+');
 		ret += print_char(data->space - zero, '0');
 		if (print == 0)
 			ft_putnbr(nb);
@@ -89,6 +95,8 @@ void	no_prec(t_flags *data, long long nb, int neg)
 
 	if (data->fill == 1)
 	{
+		if (neg == 0 && data->plus == 1)
+			ft_putchar('+');
 		len = data->fillen - neg - data->nbsize;
 		if (neg == 1)
 			ft_putchar('-');
@@ -100,6 +108,8 @@ void	no_prec(t_flags *data, long long nb, int neg)
 		ret = print_char(len, ' ');
 		if (neg == 1)
 			ft_putchar('-');
+		if (neg == 0 && data->plus == 1)
+			ft_putchar('+');
 	}
 	ft_putnbr(nb);
 	data->total += ret + neg + data->nbsize;
@@ -120,8 +130,8 @@ void	int_conv(t_flags *data)
 	data->nbsize = ft_longlen(nb);
 	if (data->setspace == 1 && neg == 0 && data->plus == 0)
 		set_space(data);
-	if (data->plus == 1 && neg == 0)
-		set_plus(data);
+	if (data->plus == 1)
+		set_plus(data, neg);
 	if (data->align == 1)
 		return (advanced_int_conv(data, nb, neg));
 	if (data->precision == 0)

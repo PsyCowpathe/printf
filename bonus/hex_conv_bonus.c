@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 14:31:43 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 17:38:34 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/28 15:18:37 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,15 @@ int		hex_size(unsigned int nb)
 	return (i);
 }
 
-void	print_hex(long long nb, char c)
+void	print_hex(t_flags *data, long long nb, char c)
 {
+	if (data->hashtag == 1 && nb != 0 && data->align == 0)
+		data->total += 2;
+	if (data->hashtag == 1 && data->primary == 'X'
+		&& nb != 0 && data->align == 0)
+		ft_putstr("0X");
+	else if (data->hashtag == 1 && nb != 0 && data->align == 0)
+		ft_putstr("0x");
 	if (c == 'X')
 		ft_llong_putnbr_base(nb, "0123456789ABCDEF");
 	else
@@ -42,6 +49,12 @@ void	advanced_hex_conv(t_flags *data, int size, unsigned int nb)
 	int		i;
 
 	i = 0;
+	if (data->hashtag == 1 && nb != 0)
+		data->total += 2;
+	if (data->hashtag == 1 && data->primary == 'X' && nb != 0)
+		ft_putstr("0X");
+	else if (data->hashtag == 1 && nb != 0)
+		ft_putstr("0x");
 	while (i < data->preclen - hex_size(nb))
 	{
 		ft_putchar('0');
@@ -50,7 +63,7 @@ void	advanced_hex_conv(t_flags *data, int size, unsigned int nb)
 	if (nb == 0 && data->precision == 1 && data->preclen == 0)
 		i--;
 	else
-		print_hex(nb, data->primary);
+		print_hex(data, nb, data->primary);
 	while (i < size)
 	{
 		ft_putchar(' ');
@@ -69,15 +82,9 @@ int		pre_hex(t_flags *data, int *size, int *i)
 	*size -= hex_size(nb);
 	if (nb == 0 && data->precision == 1 && data->preclen == 0)
 		*i -= 1;
-	if (data->hashtag == 1 && data->primary == 'X' && nb != 0)
+	if (data->hashtag == 1 && nb != 0)
 	{
-		ft_putstr("0X");
-		data->total += 2;
-	}
-	else if (data->hashtag == 1 && nb != 0)
-	{
-		ft_putstr("0x");
-		data->total += 2;
+		*size -= 2;
 	}
 	return (nb);
 }
@@ -106,5 +113,5 @@ void	hex_conv(t_flags *data)
 	}
 	data->total += i + hex_size(nb);
 	if (!(nb == 0 && data->precision == 1 && data->preclen == 0))
-		print_hex(nb, data->primary);
+		print_hex(data, nb, data->primary);
 }

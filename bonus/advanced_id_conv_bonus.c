@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 12:49:51 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 12:49:00 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/28 17:27:03 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,7 @@ void	advanced_int_conv(t_flags *data, long long nb, int neg)
 	else if (data->precision == 1 && data->space > 0 && data->fill == 0)
 		advanced_space_prec(data, nb, neg);
 	else if (data->precision == 1 && data->space > 0 && data->fill == 1)
-	{
 		advanced_fill_prec(data, nb, neg);
-	}
 	else
 		with_prec(data, nb, neg);
 }

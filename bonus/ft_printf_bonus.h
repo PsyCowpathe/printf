@@ -6,7 +6,7 @@
 /*   By: agirona <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 12:33:07 by agirona           #+#    #+#             */
-/*   Updated: 2021/02/25 12:32:13 by agirona          ###   ########lyon.fr   */
+/*   Updated: 2021/02/28 15:57:30 by agirona          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void			space(t_flags *data, char *cut, int *i);
 void			plus(t_flags *data, char *cut, int *i);
 void			asterisk(t_flags *data, char *cut, int *i);
 void			hashtag(t_flags *data, char *cut, int *i);
-void			set_plus(t_flags *data);
+void			set_plus(t_flags *data, int neg);
 void			set_space(t_flags *data);
 
 #endif
